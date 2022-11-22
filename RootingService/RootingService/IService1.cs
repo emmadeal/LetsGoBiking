@@ -1,45 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Text;
 
 namespace RootingService
 {
     // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom d'interface "IService1" à la fois dans le code et le fichier de configuration.
     [ServiceContract]
-    public interface IService1
+    public interface IRoutingBikeService
     {
         [OperationContract]
-        string GetData(int value);
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "findPaths?location={location}&destination={destination}")]
+        string findPathsAsync(string location, string destination);
 
         [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
+        List<Report> getGlobalStat();
 
-        // TODO: ajoutez vos opérations de service ici
+        [OperationContract]
+        List<Report> getStationStat(string number);
     }
 
-    // Utilisez un contrat de données comme indiqué dans l'exemple ci-après pour ajouter les types composites aux opérations de service.
-    // Vous pouvez ajouter des fichiers XSD au projet. Une fois le projet généré, vous pouvez utiliser directement les types de données qui y sont définis, avec l'espace de noms "RootingService.ContractType".
     [DataContract]
-    public class CompositeType
+    public class Report
     {
-        bool boolValue = true;
-        string stringValue = "Hello ";
+        [DataMember]
+        public Station station { get; set; }
+        [DataMember]
+        public DateTime localDate { get; set; }
 
         [DataMember]
-        public bool BoolValue
+        public string date { get; set; }
+
+        public Report(Station s)
         {
-            get { return boolValue; }
-            set { boolValue = value; }
+            station = s;
+            localDate = DateTime.Now;
+            date = localDate.ToString(new CultureInfo("fr-FR"));
         }
 
-        [DataMember]
-        public string StringValue
+        public Station getStation()
         {
-            get { return stringValue; }
-            set { stringValue = value; }
+            return this.station;
         }
+
     }
 }
