@@ -1,0 +1,10 @@
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.csproj.AssemblyReference.cache
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.csproj.CoreCompileInputs.cache
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.dll.config
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.dll
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.pdb
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\Newtonsoft.Json.dll
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\Newtonsoft.Json.xml
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.csproj.CopyComplete
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.dll
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.pdb

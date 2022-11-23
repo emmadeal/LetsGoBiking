@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.ServiceModel.Description;
 using System.Text;
 using static System.Collections.Specialized.BitVector32;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace RootingService
 {
@@ -23,7 +27,7 @@ namespace RootingService
          *      location : adresse de départ
          *      destination : adresse d'arrivée
          */
-        public string findPathsAsync(string location, string destination)
+        public string GetItinerary(string origin, string destination)
         {
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
 
@@ -32,14 +36,14 @@ namespace RootingService
                 this.stations = GetListStationAsync().Result;
             }
 
-            Itineraire itineraire = calculateItineraire(location, destination);
+            Itineraire itineraire = calculateItineraire(origin, destination);
 
             string json = JsonConvert.SerializeObject(itineraire);
             return json;
         }
 
         /**
-         * Appel OpenRoutService
+         * Appel OpenStreetMap
          * Converti une adresse en une position gps
          */
         async Task<string> convertAdressAsync(string adresse)
@@ -190,11 +194,11 @@ namespace RootingService
 
 
         /**
-         * Appel OpenRouteService
+         * Appel OpenStreetMap
          * renvoie un object contenant le chemin entre deux points
          * Prend en compte le mode de déplacement (marche ou vélo)
          */
-        async Task<OpenRouteService> Pathing(double startLongitude, double startLatitude, double endLongitude, double endLatitude, string type)
+        async Task<OpenStreetMap> Pathing(double startLongitude, double startLatitude, double endLongitude, double endLatitude, string type)
         {
             string startLong = ("" + startLongitude).Replace(",", ".");
             string startLat = ("" + startLatitude).Replace(",", ".");
@@ -226,8 +230,8 @@ namespace RootingService
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-            OpenRouteService ors = JsonConvert.DeserializeObject<OpenRouteService>(responseBody);
-            return ors;
+            OpenStreetMap osm = JsonConvert.DeserializeObject<OpenStreetMap>(responseBody);
+            return osm;
         }
 
         /**
@@ -236,24 +240,24 @@ namespace RootingService
          *      location : adresse de départ 
          *      destination : adresse d'arrivée
          */
-        public Itineraire calculateItineraire(string location, string destination)
+        public Itineraire calculateItineraire(string origin, string destination)
         {
             //Converti adresse en json avec les informations de position
-            string location_json = convertAdressAsync(location).Result;
+            string origin_json = convertAdressAsync(origin).Result;
             string destination_json = convertAdressAsync(destination).Result;
 
             //Parse pour récupérer l'objet
-            dynamic location_object = JsonConvert.DeserializeObject(location_json);
+            dynamic origin_object = JsonConvert.DeserializeObject(origin_json);
             dynamic destination_object = JsonConvert.DeserializeObject(destination_json);
 
             //Affectation des latitudes longitudes pour le départ et l'arrivée
-            double locationLatitude = location_object.features[0].geometry.coordinates[1];
-            double locationLongitude = location_object.features[0].geometry.coordinates[0];
+            double originLatitude = origin_object.features[0].geometry.coordinates[1];
+            double originLongitude = origin_object.features[0].geometry.coordinates[0];
             double destinationLatitude = destination_object.features[0].geometry.coordinates[1];
             double destinationLongitude = destination_object.features[0].geometry.coordinates[0];
 
             //Récupère la station la plus proche du départ (stationA) et la plus proche de l'arrivée (stationB)
-            Station stationA = GetNearbyStationFrom(locationLatitude, locationLongitude, "start");
+            Station stationA = GetNearbyStationFrom(originLatitude, originLongitude, "start");
             Station stationB = GetNearbyStationFrom(destinationLatitude, destinationLongitude, "end");
 
             //Affectation des latitudes longitudes des stations 
@@ -265,23 +269,21 @@ namespace RootingService
             //Initialisation des trois segments du trajet (marche | velo | marche) sous forme d'objet OpenRouteService (cf classe pour plus de détails)
 
             //Segment 1 : Départ -> StationA (marche)
-            OpenRouteService start_stationA = Pathing(locationLongitude, locationLatitude, stationA_longitude, stationA_latitude, "walk").Result;
+            OpenStreetMap start_stationA = Pathing(originLongitude, originLatitude, stationA_longitude, stationA_latitude, "walk").Result;
             List<List<double>> etapeUn = start_stationA.features[0].geometry.coordinates;
             List<Step> indicationUn = start_stationA.features[0].properties.segments[0].steps;
 
             //Segment 2 : StationA -> StationB (velo)
-            OpenRouteService stationA_stationB = Pathing(stationA_longitude, stationA_latitude, stationB_longitude, stationB_latitude, "bike").Result;
+            OpenStreetMap stationA_stationB = Pathing(stationA_longitude, stationA_latitude, stationB_longitude, stationB_latitude, "bike").Result;
             List<List<double>> etapeDeux = stationA_stationB.features[0].geometry.coordinates;
             List<Step> indicationDeux = stationA_stationB.features[0].properties.segments[0].steps;
 
             //Segment 3 : StationB -> arrivée (marche)
-            OpenRouteService stationB_end = Pathing(stationB_longitude, stationB_latitude, destinationLongitude, destinationLatitude, "walk").Result;
+            OpenStreetMap stationB_end = Pathing(stationB_longitude, stationB_latitude, destinationLongitude, destinationLatitude, "walk").Result;
             List<List<double>> etapeTroix = stationB_end.features[0].geometry.coordinates;
             List<Step> indicationTrois = stationB_end.features[0].properties.segments[0].steps;
 
-            //Ajout des traces pour les statistiques
-            Statistique.addReport(new Report(stationA));
-            Statistique.addReport(new Report(stationB));
+            
 
             //Initialisation de l'objet Itineraire qui sera return
             Itineraire itineraire = new Itineraire
@@ -297,18 +299,6 @@ namespace RootingService
             return itineraire;
         }
 
-        /**
-         * Retourne toutes les statistiques récupérées
-         */
-        public List<Report> getGlobalStat()
-        {
-            return Statistique.globalStatistique();
-        }
-
-        public List<Report> getStationStat(string number)
-        {
-            return Statistique.stationStatistique(number);
-        }
+        
     }
-}
 }

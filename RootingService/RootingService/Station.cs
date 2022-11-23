@@ -25,14 +25,6 @@ namespace RootingService
         public object overflowStands { get; set; }
     }
 
-
-
-    public class Position
-    {
-        public double latitude { get; set; }
-        public double longitude { get; set; }
-    }
-
     public class TotalStands
     {
         public Availabilities availabilities { get; set; }
@@ -43,15 +35,5 @@ namespace RootingService
     {
         public Availabilities availabilities { get; set; }
         public int capacity { get; set; }
-    }
-
-    public class Availabilities
-    {
-        public int bikes { get; set; }
-        public int stands { get; set; }
-        public int mechanicalBikes { get; set; }
-        public int electricalBikes { get; set; }
-        public int electricalInternalBatteryBikes { get; set; }
-        public int electricalRemovableBatteryBikes { get; set; }
     }
 }
