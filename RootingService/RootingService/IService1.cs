@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-
+using System.ServiceModel.Web;
 
 namespace RootingService
 {
@@ -11,6 +11,7 @@ namespace RootingService
     public interface IService1
     {
         [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "findPaths?origin={origin}&destination={destination}")]
         string GetItinerary(string origin, string destination);
 
     }

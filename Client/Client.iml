@@ -15,42 +15,56 @@
     <orderEntry type="library" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: jakarta.xml.soap:jakarta.xml.soap-api:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: jakarta.jws:jakarta.jws-api:3.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.ws:jaxws-rt:3.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.bind:jaxb-impl:3.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.bind:jaxb-core:3.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.glassfish.ha:ha-api:3.1.12" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.glassfish.external:management-api:3.2.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.glassfish.gmbal:gmbal-api-only:4.0.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jvnet.staxex:stax-ex:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.stream.buffer:streambuffer:2.0.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jvnet.mimepull:mimepull:1.9.13" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.fastinfoset:FastInfoset:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.mail:jakarta.mail:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.messaging.saaj:saaj-impl:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.woodstox:woodstox-core:6.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.ws:jaxws-rt:2.3.5" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.ws:policy:2.7.10" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.3.5" level="project" />
+    <orderEntry type="library" name="Maven: org.glassfish.ha:ha-api:3.1.13" level="project" />
+    <orderEntry type="library" name="Maven: org.glassfish.external:management-api:3.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.glassfish.gmbal:gmbal-api-only:4.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jvnet.staxex:stax-ex:1.8.3" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.stream.buffer:streambuffer:1.5.10" level="project" />
+    <orderEntry type="library" name="Maven: org.jvnet.mimepull:mimepull:1.9.15" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.18" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.activation:jakarta.activation:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:jakarta.mail:1.6.7" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.messaging.saaj:saaj-impl:1.5.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.woodstox:woodstox-core:6.2.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.woodstox:stax2-api:4.2.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.activation:jakarta.activation:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: jakarta.annotation:jakarta.annotation-api:2.0.0" level="project" />
-    <orderEntry type="library" name="Maven: javax.annotation:javax.annotation-api:1.3.2" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.xml.ws:jaxws-tools:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-xjc:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-jxc:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.xml.ws:jaxws-eclipselink-plugin:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.7" level="project" />
-    <orderEntry type="library" name="Maven: javax.persistence:javax.persistence-api:2.2" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.moxy:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.core:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.asm:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish:javax.json:1.0.4" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.xml.ws:sdo-eclipselink-plugin:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.sdo:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:1.3.5" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.ws:jaxws-tools:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-xjc:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-core:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-jxc:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.ws:jaxws-eclipselink-plugin:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.moxy:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.asm:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.core:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.ws:sdo-eclipselink-plugin:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.sdo:3.0.0-M2" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.persistence:commonj.sdo:2.1.1" level="project" />
-    <orderEntry type="library" name="Maven: commonj.sdo:commonj.sdo:2.1.1.v201112051852" level="project" />
+    <orderEntry type="library" name="Maven: javax.xml:jaxrpc-api:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-client:5.17.2" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.fusesource.hawtbuf:hawtbuf:1.11" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.ws:jaxws-api:2.3.1" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.bind:jaxb-api:2.3.1" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:javax.activation-api:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.soap:javax.xml.soap-api:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.annotation:javax.annotation-api:1.3.2" level="project" />
     <orderEntry type="library" name="Maven: javax.jws:javax.jws-api:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-web:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-web:win:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-media:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-media:win:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:19" level="project" />
   </component>
 </module>

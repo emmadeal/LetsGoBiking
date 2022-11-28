@@ -2,6 +2,7 @@
 using System.ServiceModel.Description;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace RootingService
 {
@@ -9,6 +10,7 @@ namespace RootingService
     {
         static void Main(string[] args)
         {
+            
             //Create a URI to serve as the base address
             //Be careful to run Visual Studio as Admistrator or to allow VS to open new port netsh command. 
             // Example : netsh http add urlacl url=http://+:80/MyUri user=DOMAIN\user
@@ -42,30 +44,31 @@ namespace RootingService
             //string url = "https://nominatim.openstreetmap.org/search/";
             //https://nominatim.openstreetmap.org/search?q=%2257%20Avenue%20de%20la%20gare%2006800%20Cagnes%20sur%20mer%22
 
-            string url = "https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf624857ddfd522faa498cb4d1d74518230dff&text=";
 
             /*
+            string url = "https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf624857ddfd522faa498cb4d1d74518230dff&text=";
+
             HttpClient client = new HttpClient();
-            var response = await client.GetAsync(url);
+            response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
-            */
+            
 
             string adress = "57 avenue de la gare Cagnes sur mer";
-            //string result1 = OSMAPICall(url + formatUrl(adress)).Result;
+            string result1 = OSMAPICall(url + formatUrl(adress)).Result;
 
             adress = "930 Rte des Colles, 06410 Biot";
-            //string result2 = OSMAPICall(url + formatUrl(adress)).Result;
+            string result2 = OSMAPICall(url + formatUrl(adress)).Result;
 
-            //Console.WriteLine("My result" + result1);
+            Console.WriteLine("My result" + result1);
             Console.ReadLine();
 
             //Test feature = JsonSerializer.Deserialize<Test>(result1);
             //Console.WriteLine("my feature : " + feature.ToString());
 
-            //Console.WriteLine("My result" + result2);
+            Console.WriteLine("My result" + result2);
             Console.ReadLine();
-
+            */
 
 
         }
@@ -94,18 +97,5 @@ namespace RootingService
        
     }
 
-    public class MyClass
-    {
-        string features { get; set; }
-    }
-
-    public class Test
-    {
-        Geocoding geocoding { get; set; }
-    }
-
-    public class Geocoding
-    {
-        string version { get; set; }
-    }
+    
 }
