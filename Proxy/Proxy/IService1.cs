@@ -11,7 +11,12 @@ namespace Proxy
     public interface IService1
     {
         [OperationContract]
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "Station?stationNumber={stationNumber}&contractName={contractName}")]
-        string GetStationInfo(string contractName, string stationNumber);
+        Station GetStationInfo(string contractName, string stationNumber);
+        [OperationContract]
+        List<Contract> GetListContract();
+        [OperationContract]
+        List<Station> GetListStation(string contractName);
+        [OperationContract]
+        List<Station> GetStations();
     }
 }

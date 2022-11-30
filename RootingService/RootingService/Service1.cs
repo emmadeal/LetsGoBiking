@@ -1,59 +1,146 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.ServiceModel.Description;
-using System.Text;
-using static System.Collections.Specialized.BitVector32;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Net.Http;
+using RootingService.ServiceReference1;
+using System.Runtime.Remoting;
+using System.Text.Json;
 
 namespace RootingService
 {
-    // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
-    public class Service1 : IService1
+   public class Service1 : IService1
     {
-        List<Station> stations;
+         
+        string KEY_ORS = "5b3ce3597851110001cf6248163f597ef3934a9eb52bb07f63f06669";
+        string KEY_GH = "759bc262-11f0-49da-bc17-986ebf79ce1c";
+        string KEY_JC = "42a5d0191394c5fd5614f98bf07ce0fcfde8fc2d";
 
-        string KEY_ORS = "5b3ce3597851110001cf6248004f1953f2ae4127bf2018aef32a694e";
-        string KEY_JC = "2865f4d44201b4cce8370d3b4b9081bbb21c4963";
+        Service1Client client = new Service1Client();
+        public Itineraire GetItineraire(string origin, string destination)
+        {
+            
+
+            Itineraire itineraire = calculeItineraire(origin, destination);
+
+            return itineraire;
+            
+        }
+
+        
+
 
         /**
-         * Methode REST appelée par le client légé
-         * paramètres : 
-         *      location : adresse de départ
+         * Retourne un objet itineraire avec tous les détails d'un trajet (indication de direction et chemin)
+         * Paramètres : 
+         *      location : adresse de départ 
          *      destination : adresse d'arrivée
          */
-        public string GetItinerary(string origin, string destination)
+        public Itineraire calculeItineraire(string origin, string destination)
         {
-            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
+            //En cas d'erreur, on retourne cet itinéraire
+            Itineraire erreur = new Itineraire(true, false, null, null, null);
 
-            if (this.stations == null)
+            //Converti adresse en json avec les informations de position
+            string origin_json = ConvertAdressAsync(origin).Result;
+            string destination_json = ConvertAdressAsync(destination).Result;
+
+            //Deserialize pour récupérer les coordonnées des adresses de départ et d'arrivée
+            Places origin_places;
+            Places destination_places;
+            try
             {
-                this.stations = GetListStationAsync().Result;
+                origin_places = JsonSerializer.Deserialize<Places>(origin_json);
+                destination_places = JsonSerializer.Deserialize<Places>(destination_json);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return erreur;
             }
 
-            Itineraire itineraire = calculateItineraire(origin, destination);
+            //Affectation des latitudes longitudes pour le départ et l'arrivée
+            double originLattitude;
+            double originLongitude;
+            if (origin_places.Hits.Length > 0)
+            {
+                originLattitude = origin_places.Hits[0].Position.Lattitude;
+                originLongitude = origin_places.Hits[0].Position.Lattitude;
 
-            string json = JsonConvert.SerializeObject(itineraire);
-            return json;
+            }
+            else
+            {
+                return erreur;
+            }
+
+            double destinationLattitude;
+            double destinationLongitude;
+            if (destination_places.Hits.Length > 0)
+            {
+                destinationLattitude = destination_places.Hits[0].Position.Lattitude;
+                destinationLongitude = destination_places.Hits[0].Position.Lattitude;
+
+            }
+            else
+            {
+                return erreur;
+            }
+
+            //Récupère la station la plus proche du départ (stationA) et la plus proche de l'arrivée (stationB)
+            Station stationA = GetNearbyStationFrom(originLattitude, originLongitude, "start").Result;
+            Station stationB = GetNearbyStationFrom(destinationLattitude, destinationLongitude, "end").Result;
+
+            //Affectation des latitudes longitudes des stations 
+            double stationA_longitude = stationA.Position.Longitude;
+            double stationA_lattitude = stationA.Position.Lattitude;
+            double stationB_longitude = stationB.Position.Longitude;
+            double stationB_lattitude = stationB.Position.Lattitude;
+
+            //Initialisation des trois segments du trajet (marche | velo | marche) sous forme d'objet OpenRouteService (cf classe pour plus de détails)
+
+            Etape Etape1;
+            Etape Etape2;
+            Etape Etape3;
+            try
+            {
+                //Segment 1 : Départ -> StationA (marche)
+                string itineraire1_json = Pathing(originLongitude, originLattitude, stationA_longitude, stationA_lattitude, "marche").Result;
+                Etape1 = JsonSerializer.Deserialize<Etape>(itineraire1_json); ;
+                
+                //Segment 2 : StationA -> StationB (velo)
+                string itineraire2_json = Pathing(stationA_longitude, stationA_lattitude, stationB_longitude, stationB_lattitude, "velo").Result;
+                Etape2 = JsonSerializer.Deserialize<Etape>(itineraire2_json); ;
+
+                //Segment 3 : StationB -> arrivée (marche)
+                string itineraire3_json = Pathing(stationB_longitude, stationB_lattitude, destinationLongitude, stationB_lattitude, "marche").Result;
+                Etape3 = JsonSerializer.Deserialize<Etape>(itineraire3_json); ;
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return erreur;
+            }
+
+            int temps_velo = Etape1.Chemins[0].Temps + Etape2.Chemins[0].Temps + Etape3.Chemins[0].Temps;
+            bool utile = IsUtile(originLongitude, originLattitude, destinationLongitude, destinationLattitude, temps_velo);
+
+            //Retourne l'objet Itineraire avec les étape 1, 2 et 3
+            return new Itineraire(false, true, Etape1, Etape2, Etape3);
+
         }
 
         /**
-         * Appel OpenStreetMap
+         * Appel OpenRouteService
          * Converti une adresse en une position gps
          */
-        async Task<string> convertAdressAsync(string adresse)
+        async Task<string> ConvertAdressAsync(string adresse)
         {
             HttpClient client = new HttpClient();
-            string responseBody = "";
-            //this.wow = adresse;
+            string responseBody;
+           
             try
             {
-                HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/geocode/search?api_key=" + this.KEY_ORS + "&text=" + adresse + "&boundary.country=FR");
+                HttpResponseMessage response = await client.GetAsync("https://graphhopper.com/api/1/geocode?q=" + adresse + "&locale=fr&key=" + KEY_GH);
                 response.EnsureSuccessStatusCode();
                 responseBody = await response.Content.ReadAsStringAsync();
                 return responseBody;
@@ -70,147 +157,63 @@ namespace RootingService
          * Retourne la station JCDecaux la plus proche du point renseigné 
          * Prend en compte s'il faut un vélo de libre ou un stand emplacement de dépot de libre
          */
-        Station GetNearbyStationFrom(double latitude, double longitude, string type)
+        async Task<Station> GetNearbyStationFrom(double latitude, double longitude, string type)
         {
-            double distanceMin = this.stations[0].position.longitude + this.stations[0].position.latitude;
-            Station stationCible = this.stations[0];
+            double distanceMin = -1;
+            Station stationProche = null;
 
-            foreach (var station in this.stations)
-            {
-                double a = Math.Abs(Math.Abs(longitude) - Math.Abs(station.position.longitude));
-                double b = Math.Abs(Math.Abs(latitude) - Math.Abs(station.position.latitude));
-                double distance = a + b;
-                // Check des vélo available
-                if (type == "start")
+            Contract[] contracts = await client.GetListContractAsync();
+            foreach (Contract c in contracts) {
+                Station[] stations = await client.GetListStationAsync(c.Name);
+
+                foreach (Station station in stations)
                 {
-                    if (distance < distanceMin && BikeDispo(station))
+                    double a = Math.Abs(Math.Abs(longitude) - Math.Abs(station.Position.Longitude));
+                    double b = Math.Abs(Math.Abs(latitude) - Math.Abs(station.Position.Lattitude));
+                    double distance = a + b;
+
+                    // Check des vélo available
+                    if (type == "start")
                     {
-                        distanceMin = distance;
-                        stationCible = station;
+                        if (distance < distanceMin && BikeDispo(station))
+                        {
+                            distanceMin = distance;
+                            stationProche = station;
+                        }
                     }
-                }
-                else
-                {
-                    if (distance < distanceMin && StandDispo(station))
+                    else
                     {
-                        distanceMin = distance;
-                        stationCible = station;
+                        if (distance < distanceMin && StandDispo(station))
+                        {
+                            distanceMin = distance;
+                            stationProche = station;
+                        }
                     }
+
                 }
-
             }
-            return stationCible;
+
+            return stationProche;
         }
-
-
-        /**
-         * Appel JCDecaux
-         * Retourne la liste des stations de vélo de la ville d'Amiens 
-         */
-        async Task<List<Station>> GetListStationAsync()
-        {
-            HttpClient client = new HttpClient();
-            string responseBody = "";
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync("https://api.jcdecaux.com/vls/v3/stations?contract=amiens&apiKey=" + this.KEY_JC);
-                response.EnsureSuccessStatusCode();
-                responseBody = await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-            List<Station> listStation = JsonConvert.DeserializeObject<List<Station>>(responseBody);
-            return listStation;
-
-        }
-
-        /**
-         * Paramètres : nom du contrat | numéro de la station
-         * Appel WebProxyService
-         * Retourne une station en fonction de son numéro pour un certain contrat 
-         */
-        public async Task<Station> GetStationAsync(string contractName, string stationNumber)
-        {
-            HttpClient client = new HttpClient();
-
-            string responseBody = "";
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync("http://localhost:8733/Design_Time_Addresses/WebProxyService/ProxyService/Station?stationNumber=" + stationNumber + "&contractName=" + contractName);
-                response.EnsureSuccessStatusCode();
-                responseBody = await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            responseBody = responseBody.Replace("\\", string.Empty);
-            int size = responseBody.Length;
-            responseBody = responseBody.Remove(size - 1, 1);
-            responseBody = responseBody.Remove(0, 1);
-            Station station = JsonConvert.DeserializeObject<Station>(responseBody);
-
-            return station;
-        }
-
-
-        /**
-         * Return true si la station possède des vélos
-         */
-        Boolean BikeDispo(Station station)
-        {
-            string name = station.contractName;
-            string number = "" + station.number;
-            Station response = GetStationAsync(name, number).Result;
-
-            if (response.mainStands.availabilities.bikes != 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /**
-         * Return true si la station possède emplacements pour déposer le vélo
-         */
-        Boolean StandDispo(Station station)
-        {
-            string name = station.contractName;
-            string number = "" + station.number;
-            Station response = GetStationAsync(name, number).Result;
-
-            if (response.mainStands.availabilities.stands != 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-
 
         /**
          * Appel OpenStreetMap
          * renvoie un object contenant le chemin entre deux points
          * Prend en compte le mode de déplacement (marche ou vélo)
          */
-        async Task<OpenStreetMap> Pathing(double startLongitude, double startLatitude, double endLongitude, double endLatitude, string type)
+        async Task<string> Pathing(double originLongitude, double originLatitude, double destinationLongitude, double destinationLatitude, string type)
         {
-            string startLong = ("" + startLongitude).Replace(",", ".");
-            string startLat = ("" + startLatitude).Replace(",", ".");
-            string endLong = ("" + endLongitude).Replace(",", ".");
-            string endLat = ("" + endLatitude).Replace(",", ".");
+            string startLong = ("" + originLongitude).Replace(",", ".");
+            string startLat = ("" + originLatitude).Replace(",", ".");
+            string endLong = ("" + destinationLongitude).Replace(",", ".");
+            string endLat = ("" + destinationLatitude).Replace(",", ".");
 
             HttpClient client = new HttpClient();
 
             string responseBody = "";
             try
             {
-                if (type == "walk")
+                if (type == "marche")
                 {
                     // Marche
                     HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/v2/directions/foot-walking?api_key=" + this.KEY_ORS + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + endLat);
@@ -230,75 +233,57 @@ namespace RootingService
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-            OpenStreetMap osm = JsonConvert.DeserializeObject<OpenStreetMap>(responseBody);
-            return osm;
+
+            return responseBody;
+        }
+
+        public bool IsUtile(double originLongitude, double originLattitude, double destinationLongitude, double destinationLattitude, int temps_velo)
+        {            
+            string itineraire_json = Pathing(originLongitude, originLattitude, destinationLongitude, destinationLattitude, "marche").Result;
+            Etape etape = JsonSerializer.Deserialize<Etape>(itineraire_json);
+
+            int temps_marche = etape.Chemins[0].Temps;
+
+            if(temps_marche > temps_velo)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
+
+        /**
+         * Return true si la station possède des vélos
+         */
+        Boolean BikeDispo(Station station)
+        {
+            if (station.TotalStands.Avaibilities.Bikes != 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         /**
-         * Retourne un objet itineraire avec tous les détails d'un trajet (indication de direction et chemin)
-         * Paramètres : 
-         *      location : adresse de départ 
-         *      destination : adresse d'arrivée
+         * Return true si la station possède emplacements pour déposer le vélo
          */
-        public Itineraire calculateItineraire(string origin, string destination)
+        Boolean StandDispo(Station station)
         {
-            //Converti adresse en json avec les informations de position
-            string origin_json = convertAdressAsync(origin).Result;
-            string destination_json = convertAdressAsync(destination).Result;
-
-            //Parse pour récupérer l'objet
-            dynamic origin_object = JsonConvert.DeserializeObject(origin_json);
-            dynamic destination_object = JsonConvert.DeserializeObject(destination_json);
-
-            //Affectation des latitudes longitudes pour le départ et l'arrivée
-            double originLatitude = origin_object.features[0].geometry.coordinates[1];
-            double originLongitude = origin_object.features[0].geometry.coordinates[0];
-            double destinationLatitude = destination_object.features[0].geometry.coordinates[1];
-            double destinationLongitude = destination_object.features[0].geometry.coordinates[0];
-
-            //Récupère la station la plus proche du départ (stationA) et la plus proche de l'arrivée (stationB)
-            Station stationA = GetNearbyStationFrom(originLatitude, originLongitude, "start");
-            Station stationB = GetNearbyStationFrom(destinationLatitude, destinationLongitude, "end");
-
-            //Affectation des latitudes longitudes des stations 
-            double stationA_longitude = stationA.position.longitude;
-            double stationA_latitude = stationA.position.latitude;
-            double stationB_longitude = stationB.position.longitude;
-            double stationB_latitude = stationB.position.latitude;
-
-            //Initialisation des trois segments du trajet (marche | velo | marche) sous forme d'objet OpenRouteService (cf classe pour plus de détails)
-
-            //Segment 1 : Départ -> StationA (marche)
-            OpenStreetMap start_stationA = Pathing(originLongitude, originLatitude, stationA_longitude, stationA_latitude, "walk").Result;
-            List<List<double>> etapeUn = start_stationA.features[0].geometry.coordinates;
-            List<Step> indicationUn = start_stationA.features[0].properties.segments[0].steps;
-
-            //Segment 2 : StationA -> StationB (velo)
-            OpenStreetMap stationA_stationB = Pathing(stationA_longitude, stationA_latitude, stationB_longitude, stationB_latitude, "bike").Result;
-            List<List<double>> etapeDeux = stationA_stationB.features[0].geometry.coordinates;
-            List<Step> indicationDeux = stationA_stationB.features[0].properties.segments[0].steps;
-
-            //Segment 3 : StationB -> arrivée (marche)
-            OpenStreetMap stationB_end = Pathing(stationB_longitude, stationB_latitude, destinationLongitude, destinationLatitude, "walk").Result;
-            List<List<double>> etapeTroix = stationB_end.features[0].geometry.coordinates;
-            List<Step> indicationTrois = stationB_end.features[0].properties.segments[0].steps;
-
-            
-
-            //Initialisation de l'objet Itineraire qui sera return
-            Itineraire itineraire = new Itineraire
+            if (station.TotalStands.Avaibilities.Stands != 0)
             {
-                Etape1 = etapeUn,
-                Indication1 = indicationUn,
-                Etape2 = etapeDeux,
-                Indication2 = indicationDeux,
-                Etape3 = etapeTroix,
-                Indication3 = indicationTrois,
-            };
-
-            return itineraire;
+                return true;
+            }
+            return false;
         }
 
+
+
         
+
     }
 }
