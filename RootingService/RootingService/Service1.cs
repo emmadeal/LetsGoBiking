@@ -156,38 +156,48 @@ namespace RootingService
          */
         Station GetNearbyStationFrom(double latitude, double longitude, string type)
         {
-            double distanceMin = -1;
+            double distanceMin = 100;
             Station stationProche = null;
+            int i = 0;
 
-            Contract[] contracts = GetContracts().Result;
-            foreach (Contract c in contracts) {
-                Station[] stations = GetStations(c.name).Result;
-
-                foreach (Station station in stations)
+            try
+            {
+                
+                Console.WriteLine(i++ +"dans le try");
+                Contract[] contracts = GetContracts().Result;
+                foreach (Contract c in contracts)
                 {
-                    double a = Math.Abs(Math.Abs(longitude) - Math.Abs(station.position.longitude));
-                    double b = Math.Abs(Math.Abs(latitude) - Math.Abs(station.position.latitude));
-                    double distance = a + b;
+                    var stations = GetStations(c.name).Result;
 
-                    // Check des vélo available
-                    if (type == "start")
+                    foreach (Station station in stations)
                     {
-                        if (distance < distanceMin && BikeDispo(station))
-                        {
-                            distanceMin = distance;
-                            stationProche = station;
-                        }
-                    }
-                    else
-                    {
-                        if (distance < distanceMin && StandDispo(station))
-                        {
-                            distanceMin = distance;
-                            stationProche = station;
-                        }
-                    }
+                        double a = Math.Abs(Math.Abs(longitude) - Math.Abs(station.position.longitude));
+                        double b = Math.Abs(Math.Abs(latitude) - Math.Abs(station.position.latitude));
+                        double distance = a + b;
 
+                        // Check des vélo available
+                        if (type.Equals("start"))
+                        {
+                            if (distance < distanceMin && BikeDispo(station))
+                            {
+                                distanceMin = distance;
+                                stationProche = station;
+                            }
+                        }
+                        else
+                        {
+                            if (distance < distanceMin && StandDispo(station))
+                            {
+                                distanceMin = distance;
+                                stationProche = station;
+                            }
+                        }
+
+                    }
                 }
+            
+            } catch (AggregateException e) {
+                Console.WriteLine(e.Message);
             }
 
             return stationProche;
@@ -200,7 +210,7 @@ namespace RootingService
         }
         async Task<Station[]> GetStations(string contractName)
         {
-            Station[] response = await client.GetListStationAsync(contractName);
+            var response = await client.GetListStationAsync(contractName);
             return response;
         }
 
