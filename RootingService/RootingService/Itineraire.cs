@@ -68,20 +68,20 @@ namespace RootingService
 
     public class Place
     {
-        public string Nom { get; set; }
-        public Position Position { get; set; }
+        public string name { get; set; }
+        public Position point { get; set; }
     }
 
     public class Position
     {
-        public double Longitude { get; set; }
-        public double Lattitude { get; set; }
+        public double lng { get; set; }
+        public double lat { get; set; }
 
     }
 
     public class Places
     {
-        public Place[] Hits { get; set; }
+        public Place[] hits { get; set; }
 
     }
 

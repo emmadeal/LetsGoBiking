@@ -39,9 +39,7 @@ namespace RootingService.ContractTypes
         
         private string contractNameField;
         
-        private System.DateTime lastUpdateField;
-        
-        private bool lastUpdateFieldSpecified;
+        private string lastUpdateField;
         
         private MainStands mainStandsField;
         
@@ -67,7 +65,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string Address
+        public string address
         {
             get
             {
@@ -80,7 +78,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public bool Banking
+        public bool banking
         {
             get
             {
@@ -94,7 +92,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool BankingSpecified
+        public bool bankingSpecified
         {
             get
             {
@@ -107,7 +105,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public bool Bonus
+        public bool bonus
         {
             get
             {
@@ -121,7 +119,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool BonusSpecified
+        public bool bonusSpecified
         {
             get
             {
@@ -134,7 +132,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public bool Connected
+        public bool connected
         {
             get
             {
@@ -148,7 +146,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ConnectedSpecified
+        public bool connectedSpecified
         {
             get
             {
@@ -162,7 +160,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string ContractName
+        public string contractName
         {
             get
             {
@@ -175,7 +173,8 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public System.DateTime LastUpdate
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string lastUpdate
         {
             get
             {
@@ -188,22 +187,8 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LastUpdateSpecified
-        {
-            get
-            {
-                return this.lastUpdateFieldSpecified;
-            }
-            set
-            {
-                this.lastUpdateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public MainStands MainStands
+        public MainStands mainStands
         {
             get
             {
@@ -217,7 +202,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string Name
+        public string name
         {
             get
             {
@@ -230,7 +215,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public int Number
+        public int number
         {
             get
             {
@@ -244,7 +229,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool NumberSpecified
+        public bool numberSpecified
         {
             get
             {
@@ -257,7 +242,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public bool Overflow
+        public bool overflow
         {
             get
             {
@@ -271,7 +256,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool OverflowSpecified
+        public bool overflowSpecified
         {
             get
             {
@@ -285,7 +270,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public object OverflowStands
+        public object overflowStands
         {
             get
             {
@@ -299,7 +284,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public Position Position
+        public Position position
         {
             get
             {
@@ -313,7 +298,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public object Shape
+        public object shape
         {
             get
             {
@@ -327,7 +312,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string Status
+        public string status
         {
             get
             {
@@ -341,7 +326,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public TotalStands TotalStands
+        public TotalStands totalStands
         {
             get
             {
@@ -447,7 +432,7 @@ namespace RootingService.ContractTypes
         private bool standsFieldSpecified;
         
         /// <remarks/>
-        public int Bikes
+        public int bikes
         {
             get
             {
@@ -461,7 +446,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool BikesSpecified
+        public bool bikesSpecified
         {
             get
             {
@@ -474,7 +459,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public int ElectricalBikes
+        public int electricalBikes
         {
             get
             {
@@ -488,7 +473,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ElectricalBikesSpecified
+        public bool electricalBikesSpecified
         {
             get
             {
@@ -501,7 +486,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public int ElectricalInternalBatteryBikes
+        public int electricalInternalBatteryBikes
         {
             get
             {
@@ -515,7 +500,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ElectricalInternalBatteryBikesSpecified
+        public bool electricalInternalBatteryBikesSpecified
         {
             get
             {
@@ -528,7 +513,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public int ElectricalRemovableBatteryBikes
+        public int electricalRemovableBatteryBikes
         {
             get
             {
@@ -542,7 +527,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ElectricalRemovableBatteryBikesSpecified
+        public bool electricalRemovableBatteryBikesSpecified
         {
             get
             {
@@ -555,7 +540,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public int MechanicalBikes
+        public int mechanicalBikes
         {
             get
             {
@@ -569,7 +554,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool MechanicalBikesSpecified
+        public bool mechanicalBikesSpecified
         {
             get
             {
@@ -582,7 +567,7 @@ namespace RootingService.ContractTypes
         }
         
         /// <remarks/>
-        public int Stands
+        public int stands
         {
             get
             {
@@ -596,7 +581,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StandsSpecified
+        public bool standsSpecified
         {
             get
             {
@@ -619,43 +604,43 @@ namespace RootingService.ContractTypes
     public partial class Position
     {
         
-        private double lattitudeField;
+        private double latitudeField;
         
-        private bool lattitudeFieldSpecified;
+        private bool latitudeFieldSpecified;
         
         private double longitudeField;
         
         private bool longitudeFieldSpecified;
         
         /// <remarks/>
-        public double Lattitude
+        public double latitude
         {
             get
             {
-                return this.lattitudeField;
+                return this.latitudeField;
             }
             set
             {
-                this.lattitudeField = value;
+                this.latitudeField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LattitudeSpecified
+        public bool latitudeSpecified
         {
             get
             {
-                return this.lattitudeFieldSpecified;
+                return this.latitudeFieldSpecified;
             }
             set
             {
-                this.lattitudeFieldSpecified = value;
+                this.latitudeFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public double Longitude
+        public double longitude
         {
             get
             {
@@ -669,7 +654,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LongitudeSpecified
+        public bool longitudeSpecified
         {
             get
             {
@@ -692,7 +677,7 @@ namespace RootingService.ContractTypes
     public partial class TotalStands
     {
         
-        private Avaibilities avaibilitiesField;
+        private Avaibilities availabilitiesField;
         
         private int capacityField;
         
@@ -700,20 +685,20 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public Avaibilities Avaibilities
+        public Avaibilities availabilities
         {
             get
             {
-                return this.avaibilitiesField;
+                return this.availabilitiesField;
             }
             set
             {
-                this.avaibilitiesField = value;
+                this.availabilitiesField = value;
             }
         }
         
         /// <remarks/>
-        public int Capacity
+        public int capacity
         {
             get
             {
@@ -727,7 +712,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CapacitySpecified
+        public bool capacitySpecified
         {
             get
             {
@@ -781,7 +766,7 @@ namespace RootingService.ContractTypes
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string Name
+        public string name
         {
             get
             {

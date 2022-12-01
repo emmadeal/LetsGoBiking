@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="4252805f-4168-4562-af73-d403af9756ff" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="d555af0f-e731-4e52-9ebe-c07ce783232d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/Proxy/Service1/" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/Proxy/Proxy/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="6e163cb9-c35f-43bd-907e-98479cb49d75" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Service1/?xsd=xsd2" />
-    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="626bb626-b7cb-4b8d-b2c4-21d1de691d55" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Service1/?wsdl" />
-    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="e7c34f9d-9e83-4533-90d9-f3b763854694" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Service1/?xsd=xsd0" />
-    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="facd2d98-7dc6-4925-ba81-abfb4a9138b9" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Service1/?xsd=xsd1" />
-    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="c742d8ee-99b5-43c6-a67e-4ccce30bd103" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Service1/?disco" />
+    <MetadataFile FileName="Proxy.wsdl" MetadataType="Wsdl" ID="29913fa0-7cf5-4e4d-9065-ccd2b7019462" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Proxy/?wsdl" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="853e8449-60c1-4307-8332-74a122961b90" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Proxy/?xsd=xsd2" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="e825ad37-7b66-4519-8661-b382114b4138" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Proxy/?xsd=xsd1" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="176fa5c4-479d-40d8-84ee-f11dbeb235a2" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Proxy/?disco" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="23feb680-b78f-488f-8727-91a614016d9d" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Proxy/Proxy/?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

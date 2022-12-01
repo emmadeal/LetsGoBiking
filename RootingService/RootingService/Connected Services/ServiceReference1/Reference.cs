@@ -30,49 +30,49 @@ namespace RootingService.ServiceReference1 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string AddressField;
+        private string addressField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool BankingField;
+        private bool bankingField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool BonusField;
+        private bool bonusField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool ConnectedField;
+        private bool connectedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ContractNameField;
+        private string contractNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime LastUpdateField;
+        private string lastUpdateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private RootingService.ServiceReference1.MainStands MainStandsField;
+        private RootingService.ServiceReference1.MainStands mainStandsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
+        private string nameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int NumberField;
+        private int numberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool OverflowField;
+        private bool overflowField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private object OverflowStandsField;
+        private object overflowStandsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private RootingService.ServiceReference1.Position PositionField;
+        private RootingService.ServiceReference1.Position positionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private object ShapeField;
+        private object shapeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string StatusField;
+        private string statusField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private RootingService.ServiceReference1.TotalStands TotalStandsField;
+        private RootingService.ServiceReference1.TotalStands totalStandsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -85,196 +85,196 @@ namespace RootingService.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Address {
+        public string address {
             get {
-                return this.AddressField;
+                return this.addressField;
             }
             set {
-                if ((object.ReferenceEquals(this.AddressField, value) != true)) {
-                    this.AddressField = value;
-                    this.RaisePropertyChanged("Address");
+                if ((object.ReferenceEquals(this.addressField, value) != true)) {
+                    this.addressField = value;
+                    this.RaisePropertyChanged("address");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Banking {
+        public bool banking {
             get {
-                return this.BankingField;
+                return this.bankingField;
             }
             set {
-                if ((this.BankingField.Equals(value) != true)) {
-                    this.BankingField = value;
-                    this.RaisePropertyChanged("Banking");
+                if ((this.bankingField.Equals(value) != true)) {
+                    this.bankingField = value;
+                    this.RaisePropertyChanged("banking");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Bonus {
+        public bool bonus {
             get {
-                return this.BonusField;
+                return this.bonusField;
             }
             set {
-                if ((this.BonusField.Equals(value) != true)) {
-                    this.BonusField = value;
-                    this.RaisePropertyChanged("Bonus");
+                if ((this.bonusField.Equals(value) != true)) {
+                    this.bonusField = value;
+                    this.RaisePropertyChanged("bonus");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Connected {
+        public bool connected {
             get {
-                return this.ConnectedField;
+                return this.connectedField;
             }
             set {
-                if ((this.ConnectedField.Equals(value) != true)) {
-                    this.ConnectedField = value;
-                    this.RaisePropertyChanged("Connected");
+                if ((this.connectedField.Equals(value) != true)) {
+                    this.connectedField = value;
+                    this.RaisePropertyChanged("connected");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ContractName {
+        public string contractName {
             get {
-                return this.ContractNameField;
+                return this.contractNameField;
             }
             set {
-                if ((object.ReferenceEquals(this.ContractNameField, value) != true)) {
-                    this.ContractNameField = value;
-                    this.RaisePropertyChanged("ContractName");
+                if ((object.ReferenceEquals(this.contractNameField, value) != true)) {
+                    this.contractNameField = value;
+                    this.RaisePropertyChanged("contractName");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime LastUpdate {
+        public string lastUpdate {
             get {
-                return this.LastUpdateField;
+                return this.lastUpdateField;
             }
             set {
-                if ((this.LastUpdateField.Equals(value) != true)) {
-                    this.LastUpdateField = value;
-                    this.RaisePropertyChanged("LastUpdate");
+                if ((object.ReferenceEquals(this.lastUpdateField, value) != true)) {
+                    this.lastUpdateField = value;
+                    this.RaisePropertyChanged("lastUpdate");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public RootingService.ServiceReference1.MainStands MainStands {
+        public RootingService.ServiceReference1.MainStands mainStands {
             get {
-                return this.MainStandsField;
+                return this.mainStandsField;
             }
             set {
-                if ((object.ReferenceEquals(this.MainStandsField, value) != true)) {
-                    this.MainStandsField = value;
-                    this.RaisePropertyChanged("MainStands");
+                if ((object.ReferenceEquals(this.mainStandsField, value) != true)) {
+                    this.mainStandsField = value;
+                    this.RaisePropertyChanged("mainStands");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
+        public string name {
             get {
-                return this.NameField;
+                return this.nameField;
             }
             set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
+                if ((object.ReferenceEquals(this.nameField, value) != true)) {
+                    this.nameField = value;
+                    this.RaisePropertyChanged("name");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Number {
+        public int number {
             get {
-                return this.NumberField;
+                return this.numberField;
             }
             set {
-                if ((this.NumberField.Equals(value) != true)) {
-                    this.NumberField = value;
-                    this.RaisePropertyChanged("Number");
+                if ((this.numberField.Equals(value) != true)) {
+                    this.numberField = value;
+                    this.RaisePropertyChanged("number");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Overflow {
+        public bool overflow {
             get {
-                return this.OverflowField;
+                return this.overflowField;
             }
             set {
-                if ((this.OverflowField.Equals(value) != true)) {
-                    this.OverflowField = value;
-                    this.RaisePropertyChanged("Overflow");
+                if ((this.overflowField.Equals(value) != true)) {
+                    this.overflowField = value;
+                    this.RaisePropertyChanged("overflow");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public object OverflowStands {
+        public object overflowStands {
             get {
-                return this.OverflowStandsField;
+                return this.overflowStandsField;
             }
             set {
-                if ((object.ReferenceEquals(this.OverflowStandsField, value) != true)) {
-                    this.OverflowStandsField = value;
-                    this.RaisePropertyChanged("OverflowStands");
+                if ((object.ReferenceEquals(this.overflowStandsField, value) != true)) {
+                    this.overflowStandsField = value;
+                    this.RaisePropertyChanged("overflowStands");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public RootingService.ServiceReference1.Position Position {
+        public RootingService.ServiceReference1.Position position {
             get {
-                return this.PositionField;
+                return this.positionField;
             }
             set {
-                if ((object.ReferenceEquals(this.PositionField, value) != true)) {
-                    this.PositionField = value;
-                    this.RaisePropertyChanged("Position");
+                if ((object.ReferenceEquals(this.positionField, value) != true)) {
+                    this.positionField = value;
+                    this.RaisePropertyChanged("position");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public object Shape {
+        public object shape {
             get {
-                return this.ShapeField;
+                return this.shapeField;
             }
             set {
-                if ((object.ReferenceEquals(this.ShapeField, value) != true)) {
-                    this.ShapeField = value;
-                    this.RaisePropertyChanged("Shape");
+                if ((object.ReferenceEquals(this.shapeField, value) != true)) {
+                    this.shapeField = value;
+                    this.RaisePropertyChanged("shape");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Status {
+        public string status {
             get {
-                return this.StatusField;
+                return this.statusField;
             }
             set {
-                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
-                    this.StatusField = value;
-                    this.RaisePropertyChanged("Status");
+                if ((object.ReferenceEquals(this.statusField, value) != true)) {
+                    this.statusField = value;
+                    this.RaisePropertyChanged("status");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public RootingService.ServiceReference1.TotalStands TotalStands {
+        public RootingService.ServiceReference1.TotalStands totalStands {
             get {
-                return this.TotalStandsField;
+                return this.totalStandsField;
             }
             set {
-                if ((object.ReferenceEquals(this.TotalStandsField, value) != true)) {
-                    this.TotalStandsField = value;
-                    this.RaisePropertyChanged("TotalStands");
+                if ((object.ReferenceEquals(this.totalStandsField, value) != true)) {
+                    this.totalStandsField = value;
+                    this.RaisePropertyChanged("totalStands");
                 }
             }
         }
@@ -360,10 +360,10 @@ namespace RootingService.ServiceReference1 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double LattitudeField;
+        private double latitudeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double LongitudeField;
+        private double longitudeField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -376,27 +376,27 @@ namespace RootingService.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Lattitude {
+        public double latitude {
             get {
-                return this.LattitudeField;
+                return this.latitudeField;
             }
             set {
-                if ((this.LattitudeField.Equals(value) != true)) {
-                    this.LattitudeField = value;
-                    this.RaisePropertyChanged("Lattitude");
+                if ((this.latitudeField.Equals(value) != true)) {
+                    this.latitudeField = value;
+                    this.RaisePropertyChanged("latitude");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Longitude {
+        public double longitude {
             get {
-                return this.LongitudeField;
+                return this.longitudeField;
             }
             set {
-                if ((this.LongitudeField.Equals(value) != true)) {
-                    this.LongitudeField = value;
-                    this.RaisePropertyChanged("Longitude");
+                if ((this.longitudeField.Equals(value) != true)) {
+                    this.longitudeField = value;
+                    this.RaisePropertyChanged("longitude");
                 }
             }
         }
@@ -421,10 +421,10 @@ namespace RootingService.ServiceReference1 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private RootingService.ServiceReference1.Avaibilities AvaibilitiesField;
+        private RootingService.ServiceReference1.Avaibilities availabilitiesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int CapacityField;
+        private int capacityField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -437,27 +437,27 @@ namespace RootingService.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public RootingService.ServiceReference1.Avaibilities Avaibilities {
+        public RootingService.ServiceReference1.Avaibilities availabilities {
             get {
-                return this.AvaibilitiesField;
+                return this.availabilitiesField;
             }
             set {
-                if ((object.ReferenceEquals(this.AvaibilitiesField, value) != true)) {
-                    this.AvaibilitiesField = value;
-                    this.RaisePropertyChanged("Avaibilities");
+                if ((object.ReferenceEquals(this.availabilitiesField, value) != true)) {
+                    this.availabilitiesField = value;
+                    this.RaisePropertyChanged("availabilities");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Capacity {
+        public int capacity {
             get {
-                return this.CapacityField;
+                return this.capacityField;
             }
             set {
-                if ((this.CapacityField.Equals(value) != true)) {
-                    this.CapacityField = value;
-                    this.RaisePropertyChanged("Capacity");
+                if ((this.capacityField.Equals(value) != true)) {
+                    this.capacityField = value;
+                    this.RaisePropertyChanged("capacity");
                 }
             }
         }
@@ -482,22 +482,22 @@ namespace RootingService.ServiceReference1 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int BikesField;
+        private int bikesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int ElectricalBikesField;
+        private int electricalBikesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int ElectricalInternalBatteryBikesField;
+        private int electricalInternalBatteryBikesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int ElectricalRemovableBatteryBikesField;
+        private int electricalRemovableBatteryBikesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MechanicalBikesField;
+        private int mechanicalBikesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int StandsField;
+        private int standsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -510,79 +510,79 @@ namespace RootingService.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Bikes {
+        public int bikes {
             get {
-                return this.BikesField;
+                return this.bikesField;
             }
             set {
-                if ((this.BikesField.Equals(value) != true)) {
-                    this.BikesField = value;
-                    this.RaisePropertyChanged("Bikes");
+                if ((this.bikesField.Equals(value) != true)) {
+                    this.bikesField = value;
+                    this.RaisePropertyChanged("bikes");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ElectricalBikes {
+        public int electricalBikes {
             get {
-                return this.ElectricalBikesField;
+                return this.electricalBikesField;
             }
             set {
-                if ((this.ElectricalBikesField.Equals(value) != true)) {
-                    this.ElectricalBikesField = value;
-                    this.RaisePropertyChanged("ElectricalBikes");
+                if ((this.electricalBikesField.Equals(value) != true)) {
+                    this.electricalBikesField = value;
+                    this.RaisePropertyChanged("electricalBikes");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ElectricalInternalBatteryBikes {
+        public int electricalInternalBatteryBikes {
             get {
-                return this.ElectricalInternalBatteryBikesField;
+                return this.electricalInternalBatteryBikesField;
             }
             set {
-                if ((this.ElectricalInternalBatteryBikesField.Equals(value) != true)) {
-                    this.ElectricalInternalBatteryBikesField = value;
-                    this.RaisePropertyChanged("ElectricalInternalBatteryBikes");
+                if ((this.electricalInternalBatteryBikesField.Equals(value) != true)) {
+                    this.electricalInternalBatteryBikesField = value;
+                    this.RaisePropertyChanged("electricalInternalBatteryBikes");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ElectricalRemovableBatteryBikes {
+        public int electricalRemovableBatteryBikes {
             get {
-                return this.ElectricalRemovableBatteryBikesField;
+                return this.electricalRemovableBatteryBikesField;
             }
             set {
-                if ((this.ElectricalRemovableBatteryBikesField.Equals(value) != true)) {
-                    this.ElectricalRemovableBatteryBikesField = value;
-                    this.RaisePropertyChanged("ElectricalRemovableBatteryBikes");
+                if ((this.electricalRemovableBatteryBikesField.Equals(value) != true)) {
+                    this.electricalRemovableBatteryBikesField = value;
+                    this.RaisePropertyChanged("electricalRemovableBatteryBikes");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MechanicalBikes {
+        public int mechanicalBikes {
             get {
-                return this.MechanicalBikesField;
+                return this.mechanicalBikesField;
             }
             set {
-                if ((this.MechanicalBikesField.Equals(value) != true)) {
-                    this.MechanicalBikesField = value;
-                    this.RaisePropertyChanged("MechanicalBikes");
+                if ((this.mechanicalBikesField.Equals(value) != true)) {
+                    this.mechanicalBikesField = value;
+                    this.RaisePropertyChanged("mechanicalBikes");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Stands {
+        public int stands {
             get {
-                return this.StandsField;
+                return this.standsField;
             }
             set {
-                if ((this.StandsField.Equals(value) != true)) {
-                    this.StandsField = value;
-                    this.RaisePropertyChanged("Stands");
+                if ((this.standsField.Equals(value) != true)) {
+                    this.standsField = value;
+                    this.RaisePropertyChanged("stands");
                 }
             }
         }
@@ -607,7 +607,7 @@ namespace RootingService.ServiceReference1 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
+        private string nameField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -620,14 +620,14 @@ namespace RootingService.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
+        public string name {
             get {
-                return this.NameField;
+                return this.nameField;
             }
             set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
+                if ((object.ReferenceEquals(this.nameField, value) != true)) {
+                    this.nameField = value;
+                    this.RaisePropertyChanged("name");
                 }
             }
         }
@@ -643,58 +643,58 @@ namespace RootingService.ServiceReference1 {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService1")]
-    public interface IService1 {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IProxy")]
+    public interface IProxy {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStationInfo", ReplyAction="http://tempuri.org/IService1/GetStationInfoResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetStationInfo", ReplyAction="http://tempuri.org/IProxy/GetStationInfoResponse")]
         RootingService.ServiceReference1.Station GetStationInfo(string contractName, string stationNumber);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStationInfo", ReplyAction="http://tempuri.org/IService1/GetStationInfoResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetStationInfo", ReplyAction="http://tempuri.org/IProxy/GetStationInfoResponse")]
         System.Threading.Tasks.Task<RootingService.ServiceReference1.Station> GetStationInfoAsync(string contractName, string stationNumber);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetListContract", ReplyAction="http://tempuri.org/IService1/GetListContractResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetListContract", ReplyAction="http://tempuri.org/IProxy/GetListContractResponse")]
         RootingService.ServiceReference1.Contract[] GetListContract();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetListContract", ReplyAction="http://tempuri.org/IService1/GetListContractResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetListContract", ReplyAction="http://tempuri.org/IProxy/GetListContractResponse")]
         System.Threading.Tasks.Task<RootingService.ServiceReference1.Contract[]> GetListContractAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetListStation", ReplyAction="http://tempuri.org/IService1/GetListStationResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetListStation", ReplyAction="http://tempuri.org/IProxy/GetListStationResponse")]
         RootingService.ServiceReference1.Station[] GetListStation(string contractName);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetListStation", ReplyAction="http://tempuri.org/IService1/GetListStationResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetListStation", ReplyAction="http://tempuri.org/IProxy/GetListStationResponse")]
         System.Threading.Tasks.Task<RootingService.ServiceReference1.Station[]> GetListStationAsync(string contractName);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStations", ReplyAction="http://tempuri.org/IService1/GetStationsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetStations", ReplyAction="http://tempuri.org/IProxy/GetStationsResponse")]
         RootingService.ServiceReference1.Station[] GetStations();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStations", ReplyAction="http://tempuri.org/IService1/GetStationsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxy/GetStations", ReplyAction="http://tempuri.org/IProxy/GetStationsResponse")]
         System.Threading.Tasks.Task<RootingService.ServiceReference1.Station[]> GetStationsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IService1Channel : RootingService.ServiceReference1.IService1, System.ServiceModel.IClientChannel {
+    public interface IProxyChannel : RootingService.ServiceReference1.IProxy, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class Service1Client : System.ServiceModel.ClientBase<RootingService.ServiceReference1.IService1>, RootingService.ServiceReference1.IService1 {
+    public partial class ProxyClient : System.ServiceModel.ClientBase<RootingService.ServiceReference1.IProxy>, RootingService.ServiceReference1.IProxy {
         
-        public Service1Client() {
+        public ProxyClient() {
         }
         
-        public Service1Client(string endpointConfigurationName) : 
+        public ProxyClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public Service1Client(string endpointConfigurationName, string remoteAddress) : 
+        public ProxyClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public Service1Client(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public ProxyClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public Service1Client(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public ProxyClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         

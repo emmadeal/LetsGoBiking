@@ -8,7 +8,7 @@ using System.Text;
 namespace Proxy
 {
     [ServiceContract]
-    public interface IService1
+    public interface IProxy
     {
         [OperationContract]
         Station GetStationInfo(string contractName, string stationNumber);

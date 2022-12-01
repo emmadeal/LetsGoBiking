@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
 using RootingService.ServiceReference1;
-using System.Runtime.Remoting;
 using System.Text.Json;
 
 namespace RootingService
@@ -13,9 +11,8 @@ namespace RootingService
          
         string KEY_ORS = "5b3ce3597851110001cf6248163f597ef3934a9eb52bb07f63f06669";
         string KEY_GH = "759bc262-11f0-49da-bc17-986ebf79ce1c";
-        string KEY_JC = "42a5d0191394c5fd5614f98bf07ce0fcfde8fc2d";
 
-        Service1Client client = new Service1Client();
+        ProxyClient client = new ProxyClient();
         public Itineraire GetItineraire(string origin, string destination)
         {
             
@@ -51,7 +48,6 @@ namespace RootingService
             {
                 origin_places = JsonSerializer.Deserialize<Places>(origin_json);
                 destination_places = JsonSerializer.Deserialize<Places>(destination_json);
-
             }
             catch (Exception e)
             {
@@ -59,13 +55,14 @@ namespace RootingService
                 return erreur;
             }
 
+
             //Affectation des latitudes longitudes pour le départ et l'arrivée
             double originLattitude;
             double originLongitude;
-            if (origin_places.Hits.Length > 0)
+            if (origin_places.hits.Length > 0)
             {
-                originLattitude = origin_places.Hits[0].Position.Lattitude;
-                originLongitude = origin_places.Hits[0].Position.Lattitude;
+                originLattitude = origin_places.hits[0].point.lat;
+                originLongitude = origin_places.hits[0].point.lng;
 
             }
             else
@@ -75,10 +72,10 @@ namespace RootingService
 
             double destinationLattitude;
             double destinationLongitude;
-            if (destination_places.Hits.Length > 0)
+            if (destination_places.hits.Length > 0)
             {
-                destinationLattitude = destination_places.Hits[0].Position.Lattitude;
-                destinationLongitude = destination_places.Hits[0].Position.Lattitude;
+                destinationLattitude = destination_places.hits[0].point.lat;
+                destinationLongitude = destination_places.hits[0].point.lng;
 
             }
             else
@@ -87,14 +84,14 @@ namespace RootingService
             }
 
             //Récupère la station la plus proche du départ (stationA) et la plus proche de l'arrivée (stationB)
-            Station stationA = GetNearbyStationFrom(originLattitude, originLongitude, "start").Result;
-            Station stationB = GetNearbyStationFrom(destinationLattitude, destinationLongitude, "end").Result;
+            Station stationA = GetNearbyStationFrom(originLattitude, originLongitude, "start");
+            Station stationB = GetNearbyStationFrom(destinationLattitude, destinationLongitude, "end");
 
             //Affectation des latitudes longitudes des stations 
-            double stationA_longitude = stationA.Position.Longitude;
-            double stationA_lattitude = stationA.Position.Lattitude;
-            double stationB_longitude = stationB.Position.Longitude;
-            double stationB_lattitude = stationB.Position.Lattitude;
+            double stationA_longitude = stationA.position.longitude;
+            double stationA_lattitude = stationA.position.latitude;
+            double stationB_longitude = stationB.position.longitude;
+            double stationB_lattitude = stationB.position.latitude;
 
             //Initialisation des trois segments du trajet (marche | velo | marche) sous forme d'objet OpenRouteService (cf classe pour plus de détails)
 
@@ -157,19 +154,19 @@ namespace RootingService
          * Retourne la station JCDecaux la plus proche du point renseigné 
          * Prend en compte s'il faut un vélo de libre ou un stand emplacement de dépot de libre
          */
-        async Task<Station> GetNearbyStationFrom(double latitude, double longitude, string type)
+        Station GetNearbyStationFrom(double latitude, double longitude, string type)
         {
             double distanceMin = -1;
             Station stationProche = null;
 
-            Contract[] contracts = await client.GetListContractAsync();
+            Contract[] contracts = GetContracts().Result;
             foreach (Contract c in contracts) {
-                Station[] stations = await client.GetListStationAsync(c.Name);
+                Station[] stations = GetStations(c.name).Result;
 
                 foreach (Station station in stations)
                 {
-                    double a = Math.Abs(Math.Abs(longitude) - Math.Abs(station.Position.Longitude));
-                    double b = Math.Abs(Math.Abs(latitude) - Math.Abs(station.Position.Lattitude));
+                    double a = Math.Abs(Math.Abs(longitude) - Math.Abs(station.position.longitude));
+                    double b = Math.Abs(Math.Abs(latitude) - Math.Abs(station.position.latitude));
                     double distance = a + b;
 
                     // Check des vélo available
@@ -195,6 +192,18 @@ namespace RootingService
 
             return stationProche;
         }
+
+        async Task<Contract[]> GetContracts()
+        {
+            Contract[] response = await client.GetListContractAsync();
+            return response;
+        }
+        async Task<Station[]> GetStations(string contractName)
+        {
+            Station[] response = await client.GetListStationAsync(contractName);
+            return response;
+        }
+
 
         /**
          * Appel OpenStreetMap
@@ -262,7 +271,7 @@ namespace RootingService
          */
         Boolean BikeDispo(Station station)
         {
-            if (station.TotalStands.Avaibilities.Bikes != 0)
+            if (station.totalStands.availabilities.bikes != 0)
             {
                 return true;
             }
@@ -274,7 +283,7 @@ namespace RootingService
          */
         Boolean StandDispo(Station station)
         {
-            if (station.TotalStands.Avaibilities.Stands != 0)
+            if (station.totalStands.availabilities.stands != 0)
             {
                 return true;
             }
