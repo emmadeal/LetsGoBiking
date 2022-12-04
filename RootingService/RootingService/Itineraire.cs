@@ -40,29 +40,30 @@ namespace RootingService
     public class Etape
     {
         [DataMember]
-        public Chemin[] Chemins { get; set; }
+        public Paths[] paths { get; set; }
 
     }
 
     [DataContract]
-    public class Chemin
+    public class Paths
     {
         [DataMember]
-        public double Distance { get; set; }
+        public int time { get; set; }
         [DataMember]
-        public int Temps { get; set; }
-        [DataMember]
-        public List<Instruction> Instruction { get; set; }
+        public List<Instruction> instructions { get; set; }
 
     }
 
+    
+    
     [DataContract]
     public class Instruction
     {
         [DataMember]
-        public string Texte { get; set; }
+        public double distance { get; set; }
         [DataMember]
-        public double Distance { get; set; }
+        public string text { get; set; }
+        
 
     }
 

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using RootingService.ServiceReference1;
 using System.Text.Json;
+using System.Collections.Generic;
+using System.Device.Location;
 
 namespace RootingService
 {
@@ -12,10 +14,10 @@ namespace RootingService
         string KEY_ORS = "5b3ce3597851110001cf6248163f597ef3934a9eb52bb07f63f06669";
         string KEY_GH = "759bc262-11f0-49da-bc17-986ebf79ce1c";
 
+
         ProxyClient client = new ProxyClient();
         public Itineraire GetItineraire(string origin, string destination)
         {
-            
 
             Itineraire itineraire = calculeItineraire(origin, destination);
 
@@ -38,8 +40,8 @@ namespace RootingService
             Itineraire erreur = new Itineraire(true, false, null, null, null);
 
             //Converti adresse en json avec les informations de position
-            string origin_json = ConvertAdressAsync(origin).Result;
-            string destination_json = ConvertAdressAsync(destination).Result;
+            string origin_json = ConvertAdress(origin).Result;
+            string destination_json = ConvertAdress(destination).Result;
 
             //Deserialize pour récupérer les coordonnées des adresses de départ et d'arrivée
             Places origin_places;
@@ -57,12 +59,12 @@ namespace RootingService
 
 
             //Affectation des latitudes longitudes pour le départ et l'arrivée
-            double originLattitude;
-            double originLongitude;
+            double origin_latitude;
+            double origin_longitude;
             if (origin_places.hits.Length > 0)
             {
-                originLattitude = origin_places.hits[0].point.lat;
-                originLongitude = origin_places.hits[0].point.lng;
+                origin_latitude = origin_places.hits[0].point.lat;
+                origin_longitude = origin_places.hits[0].point.lng;
 
             }
             else
@@ -70,12 +72,12 @@ namespace RootingService
                 return erreur;
             }
 
-            double destinationLattitude;
-            double destinationLongitude;
+            double destination_latitude;
+            double destination_longitude;
             if (destination_places.hits.Length > 0)
             {
-                destinationLattitude = destination_places.hits[0].point.lat;
-                destinationLongitude = destination_places.hits[0].point.lng;
+                destination_latitude = destination_places.hits[0].point.lat;
+                destination_longitude = destination_places.hits[0].point.lng;
 
             }
             else
@@ -84,8 +86,48 @@ namespace RootingService
             }
 
             //Récupère la station la plus proche du départ (stationA) et la plus proche de l'arrivée (stationB)
-            Station stationA = GetNearbyStationFrom(originLattitude, originLongitude, "start");
-            Station stationB = GetNearbyStationFrom(destinationLattitude, destinationLongitude, "end");
+            GeoCoordinate origin_coordinate = new GeoCoordinate(origin_latitude, origin_longitude);
+            GeoCoordinate destination_coordinate = new GeoCoordinate(destination_latitude, destination_longitude);
+            double distance_origin_min = -1;
+            double distance_destination_min = -1;
+
+            Station stationA = null;
+            Station stationB = null;
+            try
+            {
+                Contract[] contracts = GetContracts().Result;
+                foreach (Contract c in contracts)
+                {
+                    var stations = GetStations(c.name).Result;
+                    foreach (Station s in stations)
+                    {
+
+                        GeoCoordinate s_coordinate = new GeoCoordinate(s.position.latitude, s.position.longitude);
+                        double distance_origin = s_coordinate.GetDistanceTo(origin_coordinate);
+                        double distance_destination = s_coordinate.GetDistanceTo(destination_coordinate);
+
+
+                        // Check des vélo available
+
+                        if ((distance_origin_min == -1 || distance_origin <= distance_origin_min) && BikeDispo(s))
+                        {
+                            distance_origin_min = distance_origin;
+                            stationA = s;
+                        }
+
+
+                        if ((distance_destination_min == -1 || distance_destination < distance_destination_min) && StandDispo(s))
+                        {
+                            distance_destination_min = distance_destination;
+                            stationB = s;
+                        }
+                    }
+                }
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
 
             //Affectation des latitudes longitudes des stations 
             double stationA_longitude = stationA.position.longitude;
@@ -101,16 +143,16 @@ namespace RootingService
             try
             {
                 //Segment 1 : Départ -> StationA (marche)
-                string itineraire1_json = Pathing(originLongitude, originLattitude, stationA_longitude, stationA_lattitude, "marche").Result;
-                Etape1 = JsonSerializer.Deserialize<Etape>(itineraire1_json); ;
+                string itineraire1_json = Pathing(origin_longitude, origin_latitude, stationA_longitude, stationA_lattitude, "marche").Result;
+                Etape1 = JsonSerializer.Deserialize<Etape>(itineraire1_json);
                 
                 //Segment 2 : StationA -> StationB (velo)
                 string itineraire2_json = Pathing(stationA_longitude, stationA_lattitude, stationB_longitude, stationB_lattitude, "velo").Result;
-                Etape2 = JsonSerializer.Deserialize<Etape>(itineraire2_json); ;
+                Etape2 = JsonSerializer.Deserialize<Etape>(itineraire2_json);
 
                 //Segment 3 : StationB -> arrivée (marche)
-                string itineraire3_json = Pathing(stationB_longitude, stationB_lattitude, destinationLongitude, stationB_lattitude, "marche").Result;
-                Etape3 = JsonSerializer.Deserialize<Etape>(itineraire3_json); ;
+                string itineraire3_json = Pathing(stationB_longitude, stationB_lattitude, destination_longitude, stationB_lattitude, "marche").Result;
+                Etape3 = JsonSerializer.Deserialize<Etape>(itineraire3_json);
 
             } catch (Exception e)
             {
@@ -118,8 +160,8 @@ namespace RootingService
                 return erreur;
             }
 
-            int temps_velo = Etape1.Chemins[0].Temps + Etape2.Chemins[0].Temps + Etape3.Chemins[0].Temps;
-            bool utile = IsUtile(originLongitude, originLattitude, destinationLongitude, destinationLattitude, temps_velo);
+            int temps_velo = Etape1.paths[0].time + Etape2.paths[0].time + Etape3.paths[0].time;
+            bool utile = IsUtile(origin_longitude, origin_latitude, destination_longitude, destination_latitude, temps_velo);
 
             //Retourne l'objet Itineraire avec les étape 1, 2 et 3
             return new Itineraire(false, true, Etape1, Etape2, Etape3);
@@ -130,7 +172,7 @@ namespace RootingService
          * Appel OpenRouteService
          * Converti une adresse en une position gps
          */
-        async Task<string> ConvertAdressAsync(string adresse)
+        async Task<string> ConvertAdress(string adresse)
         {
             HttpClient client = new HttpClient();
             string responseBody;
@@ -154,45 +196,44 @@ namespace RootingService
          * Retourne la station JCDecaux la plus proche du point renseigné 
          * Prend en compte s'il faut un vélo de libre ou un stand emplacement de dépot de libre
          */
-        Station GetNearbyStationFrom(double latitude, double longitude, string type)
+        /*Station[] GetStationProche(double origin_latitude, double origin_longitude, double destination_latitude, double destination_longitude)
         {
-            double distanceMin = 100;
-            Station stationProche = null;
-            int i = 0;
+            GeoCoordinate origin_coordinate = new GeoCoordinate(origin_latitude, origin_longitude);
+            GeoCoordinate destination_coordinate = new GeoCoordinate(destination_latitude, destination_longitude);
+            double distance_origin_min = -1;
+            double distance_destination_min = -1;
+
+            Station[] stationProche = null;
 
             try
             {
-                
-                Console.WriteLine(i++ +"dans le try");
+
                 Contract[] contracts = GetContracts().Result;
                 foreach (Contract c in contracts)
                 {
                     var stations = GetStations(c.name).Result;
-
-                    foreach (Station station in stations)
+                    foreach (Station s in stations)
                     {
-                        double a = Math.Abs(Math.Abs(longitude) - Math.Abs(station.position.longitude));
-                        double b = Math.Abs(Math.Abs(latitude) - Math.Abs(station.position.latitude));
-                        double distance = a + b;
+
+                        GeoCoordinate s_coordinate = new GeoCoordinate(s.position.latitude, s.position.longitude);
+                        double distance_origin = s_coordinate.GetDistanceTo(origin_coordinate);
+                        double distance_destination = s_coordinate.GetDistanceTo(origin_coordinate);
+
 
                         // Check des vélo available
-                        if (type.Equals("start"))
+                        
+                        if ((distance_origin_min == -1 || distance_origin <= distance_origin_min) && BikeDispo(s))
                         {
-                            if (distance < distanceMin && BikeDispo(station))
-                            {
-                                distanceMin = distance;
-                                stationProche = station;
-                            }
+                            distance_origin_min = distance_origin;
+                            stationProche[0] = s;
                         }
-                        else
+                        
+                        
+                        if (distance_destination < distance_destination_min && StandDispo(s))
                         {
-                            if (distance < distanceMin && StandDispo(station))
-                            {
-                                distanceMin = distance;
-                                stationProche = station;
-                            }
+                            distance_destination_min = distance_destination;
+                            stationProche[1] = s;
                         }
-
                     }
                 }
             
@@ -201,7 +242,9 @@ namespace RootingService
             }
 
             return stationProche;
-        }
+        }*/
+
+
 
         async Task<Contract[]> GetContracts()
         {
@@ -235,14 +278,16 @@ namespace RootingService
                 if (type == "marche")
                 {
                     // Marche
-                    HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/v2/directions/foot-walking?api_key=" + this.KEY_ORS + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + endLat);
+                    //HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/v2/directions/foot-walking?api_key=" + this.KEY_ORS + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + endLat);
+                    HttpResponseMessage response = await client.GetAsync("https://graphhopper.com/api/1/route?vehicle=foot" + "&locale=fr&key=" + KEY_GH + "&type=json&points_encoded=false&point=" + startLat + "," + startLong + "&point=" + endLat + "," + endLong);
                     response.EnsureSuccessStatusCode();
                     responseBody = await response.Content.ReadAsStringAsync();
                 }
                 else
                 {
                     // Velo
-                    HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/v2/directions/cycling-regular?api_key=" + this.KEY_ORS + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + endLat);
+                    //HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/v2/directions/cycling-regular?api_key=" + this.KEY_ORS + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + endLat);
+                    HttpResponseMessage response = await client.GetAsync("https://graphhopper.com/api/1/route?vehicle=bike" + "&locale=fr&key=" + KEY_GH + "&type=json&points_encoded=false&point=" + startLat + "," + startLong + "&point=" + endLat + "," + endLong);
                     response.EnsureSuccessStatusCode();
                     responseBody = await response.Content.ReadAsStringAsync();
                 }
@@ -261,7 +306,7 @@ namespace RootingService
             string itineraire_json = Pathing(originLongitude, originLattitude, destinationLongitude, destinationLattitude, "marche").Result;
             Etape etape = JsonSerializer.Deserialize<Etape>(itineraire_json);
 
-            int temps_marche = etape.Chemins[0].Temps;
+            int temps_marche = etape.paths[0].time;
 
             if(temps_marche > temps_velo)
             {
