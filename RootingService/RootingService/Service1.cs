@@ -98,42 +98,57 @@ namespace RootingService
                 Contract[] contracts = GetContracts().Result;
                 foreach (Contract c in contracts)
                 {
-                    var stations = GetStations(c.name).Result;
-                    foreach (Station s in stations)
+                    try
                     {
-
-                        GeoCoordinate s_coordinate = new GeoCoordinate(s.position.latitude, s.position.longitude);
-                        double distance_origin = s_coordinate.GetDistanceTo(origin_coordinate);
-                        double distance_destination = s_coordinate.GetDistanceTo(destination_coordinate);
-
-
-                        // Check des vélo available
-
-                        if ((distance_origin_min == -1 || distance_origin <= distance_origin_min) && BikeDispo(s))
+                        var stations = GetStations(c.name).Result;
+                        foreach (Station s in stations)
                         {
-                            distance_origin_min = distance_origin;
-                            stationA = s;
-                        }
+
+                            GeoCoordinate s_coordinate = new GeoCoordinate(s.position.latitude, s.position.longitude);
+                            double distance_origin = s_coordinate.GetDistanceTo(origin_coordinate);
+                            double distance_destination = s_coordinate.GetDistanceTo(destination_coordinate);
 
 
-                        if ((distance_destination_min == -1 || distance_destination < distance_destination_min) && StandDispo(s))
-                        {
-                            distance_destination_min = distance_destination;
-                            stationB = s;
-                        }
+                            // Check des vélo available
+                           
+                                if (distance_origin<10000 && distance_origin != 0 && distance_origin < distance_destination && (distance_origin_min == -1 || distance_origin < distance_origin_min) && BikeDispo(s))
+                                {
+                                    stationA = s;
+                                    distance_origin_min = distance_origin;
+                                }
+
+                                if (distance_destination<10000 && distance_destination != 0 && distance_origin > distance_destination && (distance_destination_min == -1 || distance_destination < distance_destination_min) && StandDispo(s))
+                                {
+                                    stationB = s;
+                                    distance_destination_min = distance_destination;
+                                }
+                            }
+
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
                     }
                 }
             } catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            
+
 
             //Affectation des latitudes longitudes des stations 
-            double stationA_longitude = stationA.position.longitude;
-            double stationA_lattitude = stationA.position.latitude;
-            double stationB_longitude = stationB.position.longitude;
-            double stationB_lattitude = stationB.position.latitude;
+            if (stationA != null)
+            {
+                double stationA_longitude = stationA.position.longitude;
+                double stationA_lattitude = stationA.position.latitude;
+            }
+            else if (stationB != null)
+            {
+                double stationB_longitude = stationB.position.longitude;
+                double stationB_lattitude = stationB.position.latitude;
+            }
+            else return erreur;
 
             //Initialisation des trois segments du trajet (marche | velo | marche) sous forme d'objet OpenRouteService (cf classe pour plus de détails)
 
@@ -151,7 +166,7 @@ namespace RootingService
                 Etape2 = JsonSerializer.Deserialize<Etape>(itineraire2_json);
 
                 //Segment 3 : StationB -> arrivée (marche)
-                string itineraire3_json = Pathing(stationB_longitude, stationB_lattitude, destination_longitude, stationB_lattitude, "marche").Result;
+                string itineraire3_json = Pathing(stationB_longitude, stationB_lattitude, destination_longitude, destination_latitude, "marche").Result;
                 Etape3 = JsonSerializer.Deserialize<Etape>(itineraire3_json);
 
             } catch (Exception e)
