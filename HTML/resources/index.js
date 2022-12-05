@@ -42,7 +42,6 @@
 
       if (error) return;
 
-      //let url = "http://localhost:8733/Design_Time_Addresses/RoutingWithBikes/ItineraryService/rest/itinerary?departureAddress=" + inputStartVal + "&arrivalAddress=" + inputEndVal;
       let url = "http://localhost:8733/Design_Time_Addresses/RootingService/Service1/itineraire?origin=" + inputStartVal + "&destination=" + inputEndVal;
 	  $.ajax({
           type: "GET",
@@ -72,8 +71,8 @@
   */
   function addItineraries(itineraries) {
     for (let i = 0; i < itineraries.length; i++) {
-      let coordinates = itineraries[i].featureCollection.features[0].geometry.coordinates;
-      let steps = itineraries[i].featureCollection.features[0].properties.segments[0].steps;
+      let coordinates = itineraries[i].paths[0].points.coordinates;
+      let steps = itineraries[i].paths[0].steps;
       let stepList = $('#itinerarySteps');
       let color = "#ff7800";
 

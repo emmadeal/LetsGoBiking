@@ -40,4 +40,18 @@ public interface IService1 {
         @WebParam(name = "destination", targetNamespace = "http://tempuri.org/")
         String destination);
 
+    /**
+     * 
+     * @param origin
+     * @param destination
+     */
+    @WebMethod(operationName = "GetItineraireActivemq", action = "http://tempuri.org/IService1/GetItineraireActivemq")
+    @RequestWrapper(localName = "GetItineraireActivemq", targetNamespace = "http://tempuri.org/", className = "com.baeldung.soap.ws.client.generated.GetItineraireActivemq")
+    @ResponseWrapper(localName = "GetItineraireActivemqResponse", targetNamespace = "http://tempuri.org/", className = "com.baeldung.soap.ws.client.generated.GetItineraireActivemqResponse")
+    public void getItineraireActivemq(
+        @WebParam(name = "origin", targetNamespace = "http://tempuri.org/")
+        String origin,
+        @WebParam(name = "destination", targetNamespace = "http://tempuri.org/")
+        String destination);
+
 }

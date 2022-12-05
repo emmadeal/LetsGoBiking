@@ -1,45 +1,18 @@
 import com.baeldung.soap.ws.client.generated.*;
+import org.apache.activemq.ActiveMQConnectionFactory;
+
+import javax.jms.Connection;
+import javax.jms.Destination;
+import javax.jms.ExceptionListener;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 
 import java.util.Scanner;
 
-public class Client {
-    public static void main(String[] args) {
-        Service1 service = new Service1();
-        IService1 iService = service.getBasicHttpBindingIService1();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Bienvenue ! Veuillez saisir une adresse de départ.");
-        String origine = scanner.nextLine();
-        System.out.println("Veuillez saisir une adresse d'arrivée.");
-        String destination = scanner.nextLine();
-        System.out.println("Veuillez patienter, nous recherchons un itinéraire...");
-        Itineraire itineraire = iService.getItineraire(origine, destination);
-
-        if (itineraire.isErreur()) {
-            System.out.println("Erreur, nous n'avons pas trouvé d'itinéraire.");
-        } else {
-            System.out.println();
-            System.out.println(" -----------------------");
-            System.out.println();
-            for (Paths paths : itineraire.getEtape1().getValue().getPaths().getValue().getPaths()) {
-                getInstructions(paths);
-            }
-            System.out.println();
-            System.out.println(" --- Prenez un vélo ---");
-            System.out.println();
-            for (Paths paths : itineraire.getEtape2().getValue().getPaths().getValue().getPaths()) {
-                getInstructions(paths);
-            }
-            System.out.println();
-            System.out.println(" --- Reposez le vélo ---");
-            System.out.println();
-            for (Paths paths : itineraire.getEtape3().getValue().getPaths().getValue().getPaths()) {
-                getInstructions(paths);
-            }
-            System.out.println();
-            System.out.println(" -----------------------");
-            System.out.println();
-        }
-    }
+public class Client implements Runnable, ExceptionListener {
 
     private static void getInstructions(Paths paths) {
         for (Instruction instruction : paths.getInstructions().getValue().getInstruction()) {
@@ -51,6 +24,59 @@ public class Client {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public void run() {
+
+        try{
+            // Create a ConnectionFactory
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+
+            // Create a Connection
+            Connection connection = connectionFactory.createConnection();
+            connection.start();
+
+            connection.setExceptionListener(this);
+
+            // Create a Session
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            // Create the destination (Topic or Queue)
+            Destination queue = session.createQueue("queue");
+
+            // Create a MessageConsumer from the Session to the Topic or Queue
+            MessageConsumer consumer = session.createConsumer(queue);
+
+            // Wait for a message
+            Message message = consumer.receive();
+
+            TextMessage textMessage = (TextMessage) message;
+            System.out.println(textMessage.getText());
+            String instruction = "";
+
+            while(instruction != null){
+                System.in.read();
+                message = consumer.receive();
+                textMessage = (TextMessage) message;
+                if(textMessage==null)
+                    break;
+                instruction= textMessage.getText();
+                System.out.println(instruction);
+            }
+
+            consumer.close();
+            session.close();
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onException(JMSException e) {
+        System.out.println("exceptionJMS");
     }
 }
 

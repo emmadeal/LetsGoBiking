@@ -3,38 +3,106 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using RootingService.ServiceReference1;
 using System.Text.Json;
-using System.Collections.Generic;
 using System.Device.Location;
+using Apache.NMS.ActiveMQ;
+using Apache.NMS;
 
 namespace RootingService
 {
    public class Service1 : IService1
     {
          
-        string KEY_ORS = "5b3ce3597851110001cf6248163f597ef3934a9eb52bb07f63f06669";
         string KEY_GH = "759bc262-11f0-49da-bc17-986ebf79ce1c";
 
 
         ProxyClient client = new ProxyClient();
-        public Itineraire GetItineraire(string origin, string destination)
+
+        public void GetItineraireActivemq(string origin, string destination)
         {
+            try
+            {
+                Itineraire itineraire = GetItineraire(origin, destination);
 
-            Itineraire itineraire = calculeItineraire(origin, destination);
+                Uri connecturi = new Uri("activemq:tcp://localhost:61616");
+                ConnectionFactory connectionFactory = new ConnectionFactory(connecturi);
 
-            return itineraire;
+                // Create a single Connection from the Connection Factory.
+                IConnection connection = connectionFactory.CreateConnection();
+                connection.Start();
+
+                // Create a session from the Connection.
+                ISession session = connection.CreateSession();
+
+                // Use the session to target a queue.
+                IDestination queue = session.GetQueue("queue");
+
+                // Create a Producer targetting the selected queue.
+                IMessageProducer producer = session.CreateProducer(queue);
+
+                // You may configure everything to your needs, for instance:
+                producer.DeliveryMode = MsgDeliveryMode.NonPersistent;
+
+                ITextMessage message;
+
+                // Finally, to send messages:
+                if (itineraire.Erreur)
+                {
+                    message = session.CreateTextMessage(itineraire.Erreur.ToString());
+                    producer.Send(message);
+                    return;
+                }
+                if (itineraire.Utile == false)
+                {
+                    ITextMessage message_utile = session.CreateTextMessage(itineraire.Utile.ToString());
+                    producer.Send(message_utile);
+                    return;
+                }
+
+                //De l'adresse de départ à la station vélo
+                message = session.CreateTextMessage("Pour commencer dirigez vous vers la première station afin de recupérer un vélo\n");
+                producer.Send(message);
+                foreach (Instruction instruction in itineraire.Etape1.paths[0].instructions)
+                {
+                    //String endSentence = findConnectWord(instruction);
+                    message = session.CreateTextMessage(instruction.text);
+                    producer.Send(message);
+                }
+                message = session.CreateTextMessage("\nVous venez d'arriver à la première station de vélo, prenez un vélo\n");
+                producer.Send(message);
+
+                //Trajet en vélo
+                message = session.CreateTextMessage("Maintenant dirigez vous vers la deuxième station à vélo\n");
+                producer.Send(message);
+                foreach (Instruction instruction in itineraire.Etape2.paths[0].instructions)
+                {
+                    //String endSentence = findConnectWord(instruction);
+                    message = session.CreateTextMessage(instruction.text);
+                    producer.Send(message);
+                }
+                message = session.CreateTextMessage("\nVous venez d'arriver à la deuxième station de vélo, posez votre vélo sur une place disponible \n");
+                producer.Send(message);
+
+
+                //De la station de vélo à l'adresse d'arrivée
+                message = session.CreateTextMessage("Maintenant dirigez vous votre destination finale à pied\n");
+                producer.Send(message);
+                foreach (Instruction instruction in itineraire.Etape3.paths[0].instructions)
+                {
+                    //String endSentence = findConnectWord(instruction);
+                    message = session.CreateTextMessage(instruction.text);
+                    producer.Send(message);
+                }
+                message = session.CreateTextMessage("\nVous venez d'arriver à votre destination finale, en esperant que ce trajet vous a plu\n");
+                producer.Send(message);
+
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             
+
         }
-
-        
-
-
-        /**
-         * Retourne un objet itineraire avec tous les détails d'un trajet (indication de direction et chemin)
-         * Paramètres : 
-         *      location : adresse de départ 
-         *      destination : adresse d'arrivée
-         */
-        public Itineraire calculeItineraire(string origin, string destination)
+        public Itineraire GetItineraire(string origin, string destination)
         {
             //En cas d'erreur, on retourne cet itinéraire
             Itineraire erreur = new Itineraire(true, false, null, null, null);
@@ -110,19 +178,19 @@ namespace RootingService
 
 
                             // Check des vélo available
-                           
-                                if (distance_origin<10000 && distance_origin != 0 && distance_origin < distance_destination && (distance_origin_min == -1 || distance_origin < distance_origin_min) && BikeDispo(s))
-                                {
-                                    stationA = s;
-                                    distance_origin_min = distance_origin;
-                                }
 
-                                if (distance_destination<10000 && distance_destination != 0 && distance_origin > distance_destination && (distance_destination_min == -1 || distance_destination < distance_destination_min) && StandDispo(s))
-                                {
-                                    stationB = s;
-                                    distance_destination_min = distance_destination;
-                                }
+                            if (distance_origin < 10000 && distance_origin != 0 && distance_origin < distance_destination && (distance_origin_min == -1 || distance_origin < distance_origin_min) && BikeDispo(s))
+                            {
+                                stationA = s;
+                                distance_origin_min = distance_origin;
                             }
+
+                            if (distance_destination < 10000 && distance_destination != 0 && distance_origin > distance_destination && (distance_destination_min == -1 || distance_destination < distance_destination_min) && StandDispo(s))
+                            {
+                                stationB = s;
+                                distance_destination_min = distance_destination;
+                            }
+                        }
 
                         
                     }
@@ -138,15 +206,24 @@ namespace RootingService
 
 
             //Affectation des latitudes longitudes des stations 
+            double stationA_longitude = 0;
+            double stationA_lattitude = 0;
+            double stationB_longitude = 0;
+            double stationB_lattitude = 0;
+
             if (stationA != null)
             {
-                double stationA_longitude = stationA.position.longitude;
-                double stationA_lattitude = stationA.position.latitude;
+                stationA_longitude = stationA.position.longitude;
+                stationA_lattitude = stationA.position.latitude;
             }
-            else if (stationB != null)
+            else
             {
-                double stationB_longitude = stationB.position.longitude;
-                double stationB_lattitude = stationB.position.latitude;
+                return erreur;
+            }
+            if (stationB != null)
+            {
+                stationB_longitude = stationB.position.longitude;
+                stationB_lattitude = stationB.position.latitude;
             }
             else return erreur;
 
@@ -178,8 +255,9 @@ namespace RootingService
             int temps_velo = Etape1.paths[0].time + Etape2.paths[0].time + Etape3.paths[0].time;
             bool utile = IsUtile(origin_longitude, origin_latitude, destination_longitude, destination_latitude, temps_velo);
 
+
             //Retourne l'objet Itineraire avec les étape 1, 2 et 3
-            return new Itineraire(false, true, Etape1, Etape2, Etape3);
+            return new Itineraire(false, utile, Etape1, Etape2, Etape3);
 
         }
 

@@ -56,3 +56,8 @@ C:\Users\morga\Documents\L4\S7\Bike\RootingService\RootingService\obj\Debug\XsdG
 C:\Users\morga\Documents\L4\S7\Bike\RootingService\RootingService\obj\Debug\RootingService.csproj.CopyComplete
 C:\Users\morga\Documents\L4\S7\Bike\RootingService\RootingService\obj\Debug\RootingService.dll
 C:\Users\morga\Documents\L4\S7\Bike\RootingService\RootingService\obj\Debug\RootingService.pdb
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\Apache.NMS.ActiveMQ.dll
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\Apache.NMS.dll
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\ICSharpCode.SharpZipLib.pdb
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\ICSharpCode.SharpZipLib.xml

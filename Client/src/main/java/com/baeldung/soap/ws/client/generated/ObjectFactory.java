@@ -34,6 +34,9 @@ public class ObjectFactory {
     private final static QName _Paths_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "Paths");
     private final static QName _ArrayOfInstruction_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "ArrayOfInstruction");
     private final static QName _Instruction_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "Instruction");
+    private final static QName _Points_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "Points");
+    private final static QName _ArrayOfint_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "ArrayOfint");
+    private final static QName _ArrayOfArrayOfint_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "ArrayOfArrayOfint");
     private final static QName _AnyType_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "anyType");
     private final static QName _AnyURI_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
     private final static QName _Base64Binary_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "base64Binary");
@@ -58,8 +61,11 @@ public class ObjectFactory {
     private final static QName _GetItineraireOrigin_QNAME = new QName("http://tempuri.org/", "origin");
     private final static QName _GetItineraireDestination_QNAME = new QName("http://tempuri.org/", "destination");
     private final static QName _GetItineraireResponseGetItineraireResult_QNAME = new QName("http://tempuri.org/", "GetItineraireResult");
+    private final static QName _PointsCoordinates_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "coordinates");
     private final static QName _InstructionText_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "text");
+    private final static QName _PathsBbox_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "bbox");
     private final static QName _PathsInstructions_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "instructions");
+    private final static QName _PathsPoints_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "points");
     private final static QName _EtapePaths_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "paths");
     private final static QName _ItineraireEtape1_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "Etape1");
     private final static QName _ItineraireEtape2_QNAME = new QName("http://schemas.datacontract.org/2004/07/RootingService", "Etape2");
@@ -94,6 +100,22 @@ public class ObjectFactory {
      */
     public Itineraire createItineraire() {
         return new Itineraire();
+    }
+
+    /**
+     * Create an instance of {@link GetItineraireActivemq }
+     * 
+     */
+    public GetItineraireActivemq createGetItineraireActivemq() {
+        return new GetItineraireActivemq();
+    }
+
+    /**
+     * Create an instance of {@link GetItineraireActivemqResponse }
+     * 
+     */
+    public GetItineraireActivemqResponse createGetItineraireActivemqResponse() {
+        return new GetItineraireActivemqResponse();
     }
 
     /**
@@ -134,6 +156,30 @@ public class ObjectFactory {
      */
     public Instruction createInstruction() {
         return new Instruction();
+    }
+
+    /**
+     * Create an instance of {@link Points }
+     * 
+     */
+    public Points createPoints() {
+        return new Points();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfint }
+     * 
+     */
+    public ArrayOfint createArrayOfint() {
+        return new ArrayOfint();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfArrayOfint }
+     * 
+     */
+    public ArrayOfArrayOfint createArrayOfArrayOfint() {
+        return new ArrayOfArrayOfint();
     }
 
     /**
@@ -212,6 +258,45 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/RootingService", name = "Instruction")
     public JAXBElement<Instruction> createInstruction(Instruction value) {
         return new JAXBElement<Instruction>(_Instruction_QNAME, Instruction.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Points }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link Points }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/RootingService", name = "Points")
+    public JAXBElement<Points> createPoints(Points value) {
+        return new JAXBElement<Points>(_Points_QNAME, Points.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfint }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfint }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/Arrays", name = "ArrayOfint")
+    public JAXBElement<ArrayOfint> createArrayOfint(ArrayOfint value) {
+        return new JAXBElement<ArrayOfint>(_ArrayOfint_QNAME, ArrayOfint.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfArrayOfint }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfArrayOfint }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/Arrays", name = "ArrayOfArrayOfint")
+    public JAXBElement<ArrayOfArrayOfint> createArrayOfArrayOfint(ArrayOfArrayOfint value) {
+        return new JAXBElement<ArrayOfArrayOfint>(_ArrayOfArrayOfint_QNAME, ArrayOfArrayOfint.class, null, value);
     }
 
     /**
@@ -534,9 +619,61 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "origin", scope = GetItineraireActivemq.class)
+    public JAXBElement<String> createGetItineraireActivemqOrigin(String value) {
+        return new JAXBElement<String>(_GetItineraireOrigin_QNAME, String.class, GetItineraireActivemq.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "destination", scope = GetItineraireActivemq.class)
+    public JAXBElement<String> createGetItineraireActivemqDestination(String value) {
+        return new JAXBElement<String>(_GetItineraireDestination_QNAME, String.class, GetItineraireActivemq.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfArrayOfint }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfArrayOfint }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/RootingService", name = "coordinates", scope = Points.class)
+    public JAXBElement<ArrayOfArrayOfint> createPointsCoordinates(ArrayOfArrayOfint value) {
+        return new JAXBElement<ArrayOfArrayOfint>(_PointsCoordinates_QNAME, ArrayOfArrayOfint.class, Points.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
+     */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/RootingService", name = "text", scope = Instruction.class)
     public JAXBElement<String> createInstructionText(String value) {
         return new JAXBElement<String>(_InstructionText_QNAME, String.class, Instruction.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfint }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfint }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/RootingService", name = "bbox", scope = Paths.class)
+    public JAXBElement<ArrayOfint> createPathsBbox(ArrayOfint value) {
+        return new JAXBElement<ArrayOfint>(_PathsBbox_QNAME, ArrayOfint.class, Paths.class, value);
     }
 
     /**
@@ -550,6 +687,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/RootingService", name = "instructions", scope = Paths.class)
     public JAXBElement<ArrayOfInstruction> createPathsInstructions(ArrayOfInstruction value) {
         return new JAXBElement<ArrayOfInstruction>(_PathsInstructions_QNAME, ArrayOfInstruction.class, Paths.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Points }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link Points }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/RootingService", name = "points", scope = Paths.class)
+    public JAXBElement<Points> createPathsPoints(Points value) {
+        return new JAXBElement<Points>(_PathsPoints_QNAME, Points.class, Paths.class, value);
     }
 
     /**

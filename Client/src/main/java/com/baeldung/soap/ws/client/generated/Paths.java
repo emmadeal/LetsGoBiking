@@ -18,8 +18,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="bbox" type="{http://schemas.microsoft.com/2003/10/Serialization/Arrays}ArrayOfint" minOccurs="0"/&gt;
  *         &lt;element name="instructions" type="{http://schemas.datacontract.org/2004/07/RootingService}ArrayOfInstruction" minOccurs="0"/&gt;
- *         &lt;element name="time" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="points" type="{http://schemas.datacontract.org/2004/07/RootingService}Points" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -30,14 +31,42 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Paths", propOrder = {
+    "bbox",
     "instructions",
-    "time"
+    "points"
 })
 public class Paths {
 
+    @XmlElementRef(name = "bbox", namespace = "http://schemas.datacontract.org/2004/07/RootingService", type = JAXBElement.class, required = false)
+    protected JAXBElement<ArrayOfint> bbox;
     @XmlElementRef(name = "instructions", namespace = "http://schemas.datacontract.org/2004/07/RootingService", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfInstruction> instructions;
-    protected Integer time;
+    @XmlElementRef(name = "points", namespace = "http://schemas.datacontract.org/2004/07/RootingService", type = JAXBElement.class, required = false)
+    protected JAXBElement<Points> points;
+
+    /**
+     * Obtient la valeur de la propriété bbox.
+     * 
+     * @return
+     *     possible object is
+     *     {@link JAXBElement }{@code <}{@link ArrayOfint }{@code >}
+     *     
+     */
+    public JAXBElement<ArrayOfint> getBbox() {
+        return bbox;
+    }
+
+    /**
+     * Définit la valeur de la propriété bbox.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link JAXBElement }{@code <}{@link ArrayOfint }{@code >}
+     *     
+     */
+    public void setBbox(JAXBElement<ArrayOfint> value) {
+        this.bbox = value;
+    }
 
     /**
      * Obtient la valeur de la propriété instructions.
@@ -64,27 +93,27 @@ public class Paths {
     }
 
     /**
-     * Obtient la valeur de la propriété time.
+     * Obtient la valeur de la propriété points.
      * 
      * @return
      *     possible object is
-     *     {@link Integer }
+     *     {@link JAXBElement }{@code <}{@link Points }{@code >}
      *     
      */
-    public Integer getTime() {
-        return time;
+    public JAXBElement<Points> getPoints() {
+        return points;
     }
 
     /**
-     * Définit la valeur de la propriété time.
+     * Définit la valeur de la propriété points.
      * 
      * @param value
      *     allowed object is
-     *     {@link Integer }
+     *     {@link JAXBElement }{@code <}{@link Points }{@code >}
      *     
      */
-    public void setTime(Integer value) {
-        this.time = value;
+    public void setPoints(JAXBElement<Points> value) {
+        this.points = value;
     }
 
 }

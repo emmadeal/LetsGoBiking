@@ -12,8 +12,10 @@ namespace RootingService
     public interface IService1
     {
         [OperationContract]
-        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "findPaths?origin={origin}&destination={destination}")]
         Itineraire GetItineraire(string origin, string destination);
+
+        [OperationContract]
+        void GetItineraireActivemq(string origin, string destination);
 
     }
 }

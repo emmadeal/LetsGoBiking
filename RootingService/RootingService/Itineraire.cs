@@ -48,6 +48,9 @@ namespace RootingService
     public class Paths
     {
         [DataMember]
+        public int[] bbox;
+        [DataMember]
+        public Points points;
         public int time { get; set; }
         [DataMember]
         public List<Instruction> instructions { get; set; }
@@ -67,6 +70,16 @@ namespace RootingService
 
     }
 
+    public class Points
+    {
+        public int[][] coordinates;
+    }
+
+    public class Places
+    {
+        public Place[] hits { get; set; }
+
+    }
     public class Place
     {
         public string name { get; set; }
@@ -77,12 +90,6 @@ namespace RootingService
     {
         public double lng { get; set; }
         public double lat { get; set; }
-
-    }
-
-    public class Places
-    {
-        public Place[] hits { get; set; }
 
     }
 

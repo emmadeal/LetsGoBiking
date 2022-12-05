@@ -61,5 +61,19 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-media:win:17.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:17.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:17.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-client:5.17.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.fusesource.hawtbuf:hawtbuf:1.11" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.7.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.7.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:5.3.23" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.3.23" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.3.23" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.3.23" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.23" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.3.23" level="project" />
   </component>
 </module>
