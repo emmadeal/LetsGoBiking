@@ -77,16 +77,16 @@ namespace RootingService
 
     public class Places
     {
-        public Place[] hits { get; set; }
+        public Hit[] hits { get; set; }
 
     }
-    public class Place
+    public class Hit
     {
         public string name { get; set; }
-        public Position point { get; set; }
+        public Point point { get; set; }
     }
 
-    public class Position
+    public class Point
     {
         public double lng { get; set; }
         public double lat { get; set; }

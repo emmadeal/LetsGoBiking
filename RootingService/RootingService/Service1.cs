@@ -26,73 +26,76 @@ namespace RootingService
                 Uri connecturi = new Uri("activemq:tcp://localhost:61616");
                 ConnectionFactory connectionFactory = new ConnectionFactory(connecturi);
 
-                // Create a single Connection from the Connection Factory.
+                // Créer une Connection à partir de Connection Factory
                 IConnection connection = connectionFactory.CreateConnection();
                 connection.Start();
 
-                // Create a session from the Connection.
+                // Créer une session à partir de la connection
                 ISession session = connection.CreateSession();
 
-                // Use the session to target a queue.
+                // Utilise la session pour cibler une queue
                 IDestination queue = session.GetQueue("queue");
 
-                // Create a Producer targetting the selected queue.
+                // Créer un Producer qui va écrire sur la queue
                 IMessageProducer producer = session.CreateProducer(queue);
 
-                // You may configure everything to your needs, for instance:
+                // Configuration Producer
                 producer.DeliveryMode = MsgDeliveryMode.NonPersistent;
 
                 ITextMessage message;
 
-                // Finally, to send messages:
+
+                // Envoi des messages sur la queue:
+
+                //Cas d'erreur
                 if (itineraire.Erreur)
                 {
-                    message = session.CreateTextMessage(itineraire.Erreur.ToString());
+                    message = session.CreateTextMessage("Aucun itinéraire n'a été trouvé\n");
                     producer.Send(message);
                     return;
                 }
+                //Cas ou le vélo n'est pas utile
                 if (itineraire.Utile == false)
                 {
-                    ITextMessage message_utile = session.CreateTextMessage(itineraire.Utile.ToString());
+                    ITextMessage message_utile = session.CreateTextMessage("Ce n'est pas utile de faire ce trajet à vélo\n");
                     producer.Send(message_utile);
                     return;
                 }
 
+
                 //De l'adresse de départ à la station vélo
-                message = session.CreateTextMessage("Pour commencer dirigez vous vers la première station afin de recupérer un vélo\n");
+                message = session.CreateTextMessage("Suivez les instructions suivantes pour vous rendre à la station de vélo:\n");
                 producer.Send(message);
                 foreach (Instruction instruction in itineraire.Etape1.paths[0].instructions)
                 {
-                    //String endSentence = findConnectWord(instruction);
                     message = session.CreateTextMessage(instruction.text);
                     producer.Send(message);
                 }
-                message = session.CreateTextMessage("\nVous venez d'arriver à la première station de vélo, prenez un vélo\n");
+                message = session.CreateTextMessage("\nVous êtes arrivé à la station de vélo, vous pouvez en prendre un.\n");
                 producer.Send(message);
 
+
                 //Trajet en vélo
-                message = session.CreateTextMessage("Maintenant dirigez vous vers la deuxième station à vélo\n");
+                message = session.CreateTextMessage("Suivez les instructions suivantes pour vous rendre à la prochaine station de vélo:\n");
                 producer.Send(message);
                 foreach (Instruction instruction in itineraire.Etape2.paths[0].instructions)
                 {
-                    //String endSentence = findConnectWord(instruction);
                     message = session.CreateTextMessage(instruction.text);
                     producer.Send(message);
                 }
-                message = session.CreateTextMessage("\nVous venez d'arriver à la deuxième station de vélo, posez votre vélo sur une place disponible \n");
+                message = session.CreateTextMessage("\nVous êtes arrivé à la station de vélo, vous pouvez y déposer votre vélo.\n");
                 producer.Send(message);
 
 
                 //De la station de vélo à l'adresse d'arrivée
-                message = session.CreateTextMessage("Maintenant dirigez vous votre destination finale à pied\n");
+                message = session.CreateTextMessage("Suivez les instructions suivantes pour vous rendre à l'adresse d'arrivée:\n");
                 producer.Send(message);
                 foreach (Instruction instruction in itineraire.Etape3.paths[0].instructions)
                 {
-                    //String endSentence = findConnectWord(instruction);
                     message = session.CreateTextMessage(instruction.text);
                     producer.Send(message);
                 }
-                message = session.CreateTextMessage("\nVous venez d'arriver à votre destination finale, en esperant que ce trajet vous a plu\n");
+                message = session.CreateTextMessage("\nVous êtes arrivé à destination !! \n");
                 producer.Send(message);
 
             } catch(Exception e)
@@ -104,14 +107,14 @@ namespace RootingService
         }
         public Itineraire GetItineraire(string origin, string destination)
         {
-            //En cas d'erreur, on retourne cet itinéraire
+            //Itinéraire retourner en cas d'erreur:
             Itineraire erreur = new Itineraire(true, false, null, null, null);
 
-            //Converti adresse en json avec les informations de position
+            //Converti l'adresse donnée en json avec les positions
             string origin_json = ConvertAdress(origin).Result;
             string destination_json = ConvertAdress(destination).Result;
 
-            //Deserialize pour récupérer les coordonnées des adresses de départ et d'arrivée
+            //Deserialize pour récupérer les coordonnées des adresses à partir des json
             Places origin_places;
             Places destination_places;
             try
@@ -126,7 +129,7 @@ namespace RootingService
             }
 
 
-            //Affectation des latitudes longitudes pour le départ et l'arrivée
+            
             double origin_latitude;
             double origin_longitude;
             if (origin_places.hits.Length > 0)
@@ -153,14 +156,19 @@ namespace RootingService
                 return erreur;
             }
 
-            //Récupère la station la plus proche du départ (stationA) et la plus proche de l'arrivée (stationB)
+
+            //Cherche les stations les plus proches
             GeoCoordinate origin_coordinate = new GeoCoordinate(origin_latitude, origin_longitude);
             GeoCoordinate destination_coordinate = new GeoCoordinate(destination_latitude, destination_longitude);
             double distance_origin_min = -1;
             double distance_destination_min = -1;
 
+            //Station la plus proche de l'adresse de départ
             Station stationA = null;
+            //Station la plus proche de l'adresse d'arrivée
             Station stationB = null;
+
+
             try
             {
                 Contract[] contracts = GetContracts().Result;
@@ -171,14 +179,13 @@ namespace RootingService
                         var stations = GetStations(c.name).Result;
                         foreach (Station s in stations)
                         {
-
+                            //Pour chaque station trouvée, on calcule sa distance avec les adresses de départ et d'arrivée
                             GeoCoordinate s_coordinate = new GeoCoordinate(s.position.latitude, s.position.longitude);
                             double distance_origin = s_coordinate.GetDistanceTo(origin_coordinate);
                             double distance_destination = s_coordinate.GetDistanceTo(destination_coordinate);
 
 
-                            // Check des vélo available
-
+                            //On vérifie la disponibilité des vélos pour la station et on compare les distances
                             if (distance_origin < 10000 && distance_origin != 0 && distance_origin < distance_destination && (distance_origin_min == -1 || distance_origin < distance_origin_min) && BikeDispo(s))
                             {
                                 stationA = s;
@@ -205,7 +212,7 @@ namespace RootingService
             }
 
 
-            //Affectation des latitudes longitudes des stations 
+            //Coordonnées des stations trouvées
             double stationA_longitude = 0;
             double stationA_lattitude = 0;
             double stationB_longitude = 0;
@@ -227,22 +234,24 @@ namespace RootingService
             }
             else return erreur;
 
-            //Initialisation des trois segments du trajet (marche | velo | marche) sous forme d'objet OpenRouteService (cf classe pour plus de détails)
 
+
+            //On crée les 3 étapes qui vont composer l'itinéraire à retourner
             Etape Etape1;
             Etape Etape2;
             Etape Etape3;
+
             try
             {
-                //Segment 1 : Départ -> StationA (marche)
+                //Première étape: de l'adresse de départ à la première station
                 string itineraire1_json = Pathing(origin_longitude, origin_latitude, stationA_longitude, stationA_lattitude, "marche").Result;
                 Etape1 = JsonSerializer.Deserialize<Etape>(itineraire1_json);
-                
-                //Segment 2 : StationA -> StationB (velo)
+
+                //Deuxième étape: de la première station à la deuxième station
                 string itineraire2_json = Pathing(stationA_longitude, stationA_lattitude, stationB_longitude, stationB_lattitude, "velo").Result;
                 Etape2 = JsonSerializer.Deserialize<Etape>(itineraire2_json);
 
-                //Segment 3 : StationB -> arrivée (marche)
+                //Troisième étape: de la deuxième station à l'adresse d'arrivée
                 string itineraire3_json = Pathing(stationB_longitude, stationB_lattitude, destination_longitude, destination_latitude, "marche").Result;
                 Etape3 = JsonSerializer.Deserialize<Etape>(itineraire3_json);
 
@@ -252,19 +261,17 @@ namespace RootingService
                 return erreur;
             }
 
+            //Calcule le temps mis à vélo et on vérifie que c'est utile
             int temps_velo = Etape1.paths[0].time + Etape2.paths[0].time + Etape3.paths[0].time;
             bool utile = IsUtile(origin_longitude, origin_latitude, destination_longitude, destination_latitude, temps_velo);
 
 
-            //Retourne l'objet Itineraire avec les étape 1, 2 et 3
+            //Retourne un itinéraire composé des 3 étapes trouvées précédemment
             return new Itineraire(false, utile, Etape1, Etape2, Etape3);
 
         }
 
-        /**
-         * Appel OpenRouteService
-         * Converti une adresse en une position gps
-         */
+        
         async Task<string> ConvertAdress(string adresse)
         {
             HttpClient client = new HttpClient();
@@ -272,6 +279,7 @@ namespace RootingService
            
             try
             {
+                //Récupère les informations de position depuis l'adresse donnée
                 HttpResponseMessage response = await client.GetAsync("https://graphhopper.com/api/1/geocode?q=" + adresse + "&locale=fr&key=" + KEY_GH);
                 response.EnsureSuccessStatusCode();
                 responseBody = await response.Content.ReadAsStringAsync();
@@ -285,10 +293,7 @@ namespace RootingService
             }
         }
 
-        /**
-         * Retourne la station JCDecaux la plus proche du point renseigné 
-         * Prend en compte s'il faut un vélo de libre ou un stand emplacement de dépot de libre
-         */
+        
         /*Station[] GetStationProche(double origin_latitude, double origin_longitude, double destination_latitude, double destination_longitude)
         {
             GeoCoordinate origin_coordinate = new GeoCoordinate(origin_latitude, origin_longitude);
@@ -370,16 +375,14 @@ namespace RootingService
             {
                 if (type == "marche")
                 {
-                    // Marche
-                    //HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/v2/directions/foot-walking?api_key=" + this.KEY_ORS + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + endLat);
+                    //Récupère le chemin entre 2 points grâce aux coordonnées (à pied)
                     HttpResponseMessage response = await client.GetAsync("https://graphhopper.com/api/1/route?vehicle=foot" + "&locale=fr&key=" + KEY_GH + "&type=json&points_encoded=false&point=" + startLat + "," + startLong + "&point=" + endLat + "," + endLong);
                     response.EnsureSuccessStatusCode();
                     responseBody = await response.Content.ReadAsStringAsync();
                 }
                 else
                 {
-                    // Velo
-                    //HttpResponseMessage response = await client.GetAsync("https://api.openrouteservice.org/v2/directions/cycling-regular?api_key=" + this.KEY_ORS + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + endLat);
+                    //Récupère le chemin entre 2 points grâce aux coordonnées (à vélo)
                     HttpResponseMessage response = await client.GetAsync("https://graphhopper.com/api/1/route?vehicle=bike" + "&locale=fr&key=" + KEY_GH + "&type=json&points_encoded=false&point=" + startLat + "," + startLong + "&point=" + endLat + "," + endLong);
                     response.EnsureSuccessStatusCode();
                     responseBody = await response.Content.ReadAsStringAsync();
@@ -399,8 +402,12 @@ namespace RootingService
             string itineraire_json = Pathing(originLongitude, originLattitude, destinationLongitude, destinationLattitude, "marche").Result;
             Etape etape = JsonSerializer.Deserialize<Etape>(itineraire_json);
 
+
+            //Calcule le temps mis à pied et le compare avec le temps mis à vélo
             int temps_marche = etape.paths[0].time;
 
+            //si c'est plus rapide à vélo, on renvoie true
+            //sinon on renvoie false
             if(temps_marche > temps_velo)
             {
                 return true;
@@ -414,11 +421,9 @@ namespace RootingService
 
 
 
-        /**
-         * Return true si la station possède des vélos
-         */
         Boolean BikeDispo(Station station)
         {
+            //Vérifie qu'il y a des vélos disponibles à une station donnée
             if (station.totalStands.availabilities.bikes != 0)
             {
                 return true;
@@ -426,11 +431,11 @@ namespace RootingService
             return false;
         }
 
-        /**
-         * Return true si la station possède emplacements pour déposer le vélo
-         */
+        
+
         Boolean StandDispo(Station station)
         {
+            //Vérifie qu'il y a une place libre pour déposer un vélo à une station donnée
             if (station.totalStands.availabilities.stands != 0)
             {
                 return true;

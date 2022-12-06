@@ -9,14 +9,14 @@ using System.Text.Json;
 
 namespace Proxy
 {
-    // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
     public class Proxy : IProxy
     {
         string KEY_JC = "42a5d0191394c5fd5614f98bf07ce0fcfde8fc2d";
 
         Cache<Objet> proxy = new Cache<Objet>();
 
-        
+
+        //Récupère les informations d'une station
         public Station GetStationInfo(string contractName, string stationNumber)
         {
             int updateDuration = 60;
@@ -25,6 +25,7 @@ namespace Proxy
             return JsonSerializer.Deserialize<Station>(response);
         }
 
+        //Récupère la liste des contracts
         public List<Contract> GetListContract()
         {
             string url = "https://api.jcdecaux.com/vls/v3/contracts?apiKey=" + KEY_JC;
@@ -32,6 +33,7 @@ namespace Proxy
             return JsonSerializer.Deserialize<List<Contract>>(response);
         }
 
+        //Récupère la liste des stations associées à un contract
         public List<Station> GetListStation(string contractName)
         {
             string url = "https://api.jcdecaux.com/vls/v3/stations?contract=" + contractName + "&apiKey=" + KEY_JC;
@@ -39,7 +41,7 @@ namespace Proxy
             return JsonSerializer.Deserialize<List<Station>>(response);
         }
 
-
+        //Récupère la liste de toutes les stations
         public List<Station> GetStations()
         {
             string url = "https://api.jcdecaux.com/vls/v3/stations?apiKey=" + KEY_JC;

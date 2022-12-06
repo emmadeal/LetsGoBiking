@@ -1,5 +1,8 @@
 import com.baeldung.soap.ws.client.generated.*;
+import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQDestination;
+import org.apache.activemq.command.ActiveMQQueue;
 
 import javax.jms.Connection;
 import javax.jms.Destination;
@@ -53,10 +56,11 @@ public class Client implements Runnable, ExceptionListener {
 
             TextMessage textMessage = (TextMessage) message;
             System.out.println(textMessage.getText());
+
             String instruction = "";
 
             while(instruction != null){
-                System.in.read();
+                //System.in.read();
                 message = consumer.receive();
                 textMessage = (TextMessage) message;
                 if(textMessage==null)
@@ -65,6 +69,8 @@ public class Client implements Runnable, ExceptionListener {
                 System.out.println(instruction);
             }
 
+            ActiveMQConnection mqConnection = (ActiveMQConnection) connection;
+            mqConnection.destroyDestination((ActiveMQDestination) queue);
             consumer.close();
             session.close();
             connection.close();
