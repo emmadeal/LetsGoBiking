@@ -1,12 +1,9 @@
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.csproj.AssemblyReference.cache
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.csproj.CoreCompileInputs.cache
-C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.dll.config
-C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.dll
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.pdb
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\Newtonsoft.Json.dll
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\Newtonsoft.Json.xml
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.csproj.CopyComplete
-C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.dll
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.pdb
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\XsdGeneratedCode\GeneratedXsdTypes.cs
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
@@ -61,3 +58,7 @@ C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\Rooting
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\ICSharpCode.SharpZipLib.dll
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\ICSharpCode.SharpZipLib.pdb
 C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\ICSharpCode.SharpZipLib.xml
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.exe.config
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\bin\Debug\RootingService.exe
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.csproj.SuggestedBindingRedirects.cache
+C:\Users\emmad\Documents\cours\S7\Middleware\LetsGoBiking\RootingService\RootingService\obj\Debug\RootingService.exe

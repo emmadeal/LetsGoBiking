@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Device.Location;
 using Apache.NMS.ActiveMQ;
 using Apache.NMS;
+using System.ServiceModel.Web;
 
 namespace RootingService
 {
@@ -107,6 +108,8 @@ namespace RootingService
         }
         public Itineraire GetItineraire(string origin, string destination)
         {
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
+
             //Itinéraire retourner en cas d'erreur:
             Itineraire erreur = new Itineraire(true, false, null, null, null);
 
