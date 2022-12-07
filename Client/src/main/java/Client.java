@@ -60,7 +60,7 @@ public class Client implements Runnable, ExceptionListener {
             String instruction = "";
 
             while(instruction != null){
-                //System.in.read();
+                System.in.read();
                 message = consumer.receive();
                 textMessage = (TextMessage) message;
                 if(textMessage==null)
