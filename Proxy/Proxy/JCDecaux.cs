@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Json;
 using System.ServiceModel;
 using System.Threading.Tasks;
 
-
+//Pour la déserialisation 
 namespace Proxy
 {
     public class Station
@@ -63,6 +63,7 @@ namespace Proxy
 
     }
 
+    //On enregistre dans le cache sous forme d'objet JCDecaux
     class Objet
     {
         string json;

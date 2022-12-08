@@ -359,11 +359,8 @@ namespace RootingService
         }
 
 
-        /**
-         * Appel OpenStreetMap
-         * renvoie un object contenant le chemin entre deux points
-         * Prend en compte le mode de déplacement (marche ou vélo)
-         */
+       
+        //Appel OpenStreetMap et renvoie un object contenant le chemin entre deux points
         async Task<string> Pathing(double originLongitude, double originLatitude, double destinationLongitude, double destinationLatitude, string type)
         {
             string startLong = ("" + originLongitude).Replace(",", ".");
@@ -402,6 +399,7 @@ namespace RootingService
 
         public bool IsUtile(double originLongitude, double originLattitude, double destinationLongitude, double destinationLattitude, int temps_velo)
         {            
+            //une seule étape de l'origine à la destination
             string itineraire_json = Pathing(originLongitude, originLattitude, destinationLongitude, destinationLattitude, "marche").Result;
             Etape etape = JsonSerializer.Deserialize<Etape>(itineraire_json);
 
